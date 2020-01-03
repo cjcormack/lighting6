@@ -1,0 +1,120 @@
+<module version="2.0">
+	<meta>
+		<identity>
+			<uri>urn:uk:chriscormack:netkernel:lighting:artNet</uri>
+			<version>1.0.0</version>
+		</identity>
+		<info>
+			<name>Lighting / ArtNet Transport</name>
+			<description></description>
+		</info>
+	</meta>
+
+	<system>
+		<dynamic/>
+		<classloader>
+			<exports>
+				<match>uk\.chriscormack\.netkernel\.lighting\.artnet\.ArtNetTransport</match>
+			</exports>
+		</classloader>
+	</system>
+
+	<rootspace name="Lighting / ArtNet Transport">
+		<prototype>
+			<class>uk.chriscormack.netkernel.lighting.artnet.ArtNetTransport</class>
+			<id>ArtNetTransport</id>
+			<name>ArtNet Transport</name>
+			<description>Send values to lights using ArtNet</description>
+			<parameter name="config" desc="configuration resource" type="identifier" min="0" max="1" default="res:/etc/ArtNetConfig.xml"/>
+			<parameter name="id" type="string" default="null"/>
+			<parameter name="private" type="boolean" min="0" max="1" default="false"/>
+		</prototype>
+
+		<mapper>
+			<config>
+				<endpoint>
+					<grammar>
+						<active>
+							<identifier>active:artnet-channel</identifier>
+							<argument name="config" desc="override default configuration location" min="0" max="1"/>
+							<argument name="channelNo" desc="ID of the ArtNet channel" min="1" max="1"/>
+						</active>
+					</grammar>
+					<verbs>SINK,SOURCE</verbs>
+					<request>
+						<identifier>active:java</identifier>
+						<argument name="class">uk.chriscormack.netkernel.lighting.artnet.ChannelAccessor</argument>
+						<varargs/>
+					</request>
+				</endpoint>
+
+				<endpoint>
+					<grammar>
+						<active>
+							<identifier>active:artnet-batchChannel</identifier>
+							<argument name="config" desc="override default configuration location" min="0" max="1"/>
+							<argument name="channels" desc="list of channel nos" min="0" max="1"/>
+						</active>
+					</grammar>
+					<verbs>SOURCE</verbs>
+					<request>
+						<identifier>active:java</identifier>
+						<argument name="class">uk.chriscormack.netkernel.lighting.artnet.BatchChannelAccessor</argument>
+						<varargs/>
+					</request>
+				</endpoint>
+				<endpoint>
+					<grammar>
+						<active>
+							<identifier>active:artnet-batchChannel</identifier>
+							<argument name="config" desc="override default configuration location" min="0" max="1"/>
+						</active>
+					</grammar>
+					<verbs>SINK</verbs>
+					<request>
+						<identifier>active:java</identifier>
+						<argument name="class">uk.chriscormack.netkernel.lighting.artnet.BatchChannelAccessor</argument>
+						<varargs/>
+					</request>
+				</endpoint>
+
+				<endpoint>
+					<grammar>
+						<active>
+							<identifier>active:artnet-addChannelChangeListener</identifier>
+							<identifier>active:artnet-removeChannelChangeListener</identifier>
+							<argument name="config" desc="override default configuration location" min="0" max="1"/>
+							<argument name="request" />
+						</active>
+					</grammar>
+					<request>
+						<identifier>active:java</identifier>
+						<argument name="class">uk.chriscormack.netkernel.lighting.artnet.ChannelChangeListenerAccessor</argument>
+						<varargs/>
+					</request>
+				</endpoint>
+			</config>
+			<space/>
+		</mapper>
+
+		<representation>
+			<class>uk.chriscormack.netkernel.lighting.artnet.ArtNetController</class>
+		</representation>
+		<transreptor>
+			<class>uk.chriscormack.netkernel.lighting.artnet.ArtNetTransreptor</class>
+		</transreptor>
+
+		<import>
+			<uri>urn:org:netkernel:mod:hds</uri>
+			<private/>
+		</import>
+		<import>
+			<uri>urn:org:netkernel:ext:layer1</uri>
+			<private/>
+		</import>
+		<import>
+			<uri>urn:org:netkernel:lang:kotlin</uri>
+			<private/>
+		</import>
+	</rootspace>
+</module>

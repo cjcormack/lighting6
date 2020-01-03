@@ -1,0 +1,67 @@
+<module version="2.0">
+	<meta>
+		<identity>
+			<uri>urn:uk:chriscormack:netkernel:lighting:desk</uri>
+			<version>1.0.0</version>
+		</identity>
+		<info>
+			<name>Lighting / Desk</name>
+			<description></description>
+		</info>
+	</meta>
+
+	<system>
+		<dynamic/>
+	</system>
+
+	<rootspace>
+		<literal uri="res:/etc/ArtNetConfig.xml" type="xml" public="false">
+			<config>
+				<universe>0</universe>
+				<subnet>0</subnet>
+			</config>
+		</literal>
+
+		<literal uri="res:/etc/system/SimpleDynamicImportHook.xml" type="xml">
+			<connection>
+				<type>HTTPFulcrum</type>
+			</connection>
+		</literal>
+
+		<transport>
+			<prototype>ArtNetTransport</prototype>
+		</transport>
+
+		<fileset>
+			<regex>res:/lighting6/index.html</regex>
+			<rewrite>res:/index.html</rewrite>
+		</fileset>
+
+		<accessor>
+			<grammar>
+				<active>
+					<identifier>active:channelsChanged</identifier>
+					<varargs/>
+				</active>
+			</grammar>
+			<class>uk.chriscormack.netkernel.lighting.desk.ChannelChangeEndpoint</class>
+		</accessor>
+
+		<import>
+			<uri>urn:uk:chriscormack:netkernel:lighting:artNet</uri>
+			<private/>
+		</import>
+		<import>
+			<uri>urn:org:netkernel:ext:layer1</uri>
+			<private/>
+		</import>
+		<import>
+			<uri>urn:org:netkernel:mod:hds</uri>
+			<private/>
+		</import>
+		<import>
+			<uri>urn:org:netkernel:lang:kotlin</uri>
+			<private/>
+		</import>
+	</rootspace>
+</module>

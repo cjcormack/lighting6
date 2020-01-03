@@ -1,0 +1,38 @@
+apply plugin: 'kotlin'
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url "http://maven.netkernel.org/netkernel-maven"
+        }
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'urn.org.netkernel', name: 'lang.kotlin', version: "$versions.langKotlin"
+}
+
+sourceSets["main"].kotlin.srcDirs("src")
+sourceSets["main"].java.exclude("**/*.kts")
+sourceSets["main"].kotlin.exclude("**/*.kts")
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
