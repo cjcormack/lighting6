@@ -48,8 +48,9 @@ class BatchChannelAccessor: BaseArtNetAccessor() {
         val valuesToSet = valuesNode.reader.getNodes("//channel").map {
             val channelNo = it.firstValue<Int>("no", this)
             val channelValue = it.firstValue<Int>("value", this)
+            val fadeMs = it.firstValue("fadeMs", this, 0)
 
-            channelNo to channelValue
+            channelNo to ChannelChange(channelValue, fadeMs.toLong())
         }
         controller.setValues(valuesToSet)
     }
