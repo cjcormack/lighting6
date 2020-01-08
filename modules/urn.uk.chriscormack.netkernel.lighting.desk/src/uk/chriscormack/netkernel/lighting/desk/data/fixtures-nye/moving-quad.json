@@ -1,0 +1,6 @@
+{
+  "name": "moving-quad",
+  "description": "Moving Quad",
+  "firstChannel": 88,
+  "type": "movingQuad"
+}

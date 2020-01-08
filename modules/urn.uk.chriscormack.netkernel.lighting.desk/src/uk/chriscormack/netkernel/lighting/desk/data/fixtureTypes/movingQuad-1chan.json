@@ -1,0 +1,108 @@
+{
+	"type": "movingQuad-1chan",
+	"channelCount": 1,
+	"blackoutChannelOffsets": [
+		0
+	],
+	"details": {
+		"modeSelectors": [
+			{
+				"id": "movementMode",
+				"name": "Movement Mode",
+				"channelOffset": 0,
+				"modes": [
+					{
+						"id": "m0",
+						"name": "0",
+						"channelLevel": 0
+					},
+					{
+						"id": "m1",
+						"name": "1",
+						"channelLevel": 8
+					},
+					{
+						"id": "m2",
+						"name": "2",
+						"channelLevel": 23
+					},
+					{
+						"id": "m3",
+						"name": "3",
+						"channelLevel": 38
+					},
+					{
+						"id": "m4",
+						"name": "4",
+						"channelLevel": 53
+					},
+					{
+						"id": "m5",
+						"name": "5",
+						"channelLevel": 68
+					},
+					{
+						"id": "m6",
+						"name": "6",
+						"channelLevel": 83
+					},
+					{
+						"id": "m7",
+						"name": "7",
+						"channelLevel": 98
+					},
+					{
+						"id": "m8",
+						"name": "8",
+						"channelLevel": 113
+					},
+					{
+						"id": "m9",
+						"name": "9",
+						"channelLevel": 128
+					},
+					{
+						"id": "m10",
+						"name": "10",
+						"channelLevel": 143
+					},
+					{
+						"id": "m11",
+						"name": "11",
+						"channelLevel": 158
+					},
+					{
+						"id": "m12",
+						"name": "12",
+						"channelLevel": 173
+					},
+					{
+						"id": "m13",
+						"name": "13",
+						"channelLevel": 188
+					},
+					{
+						"id": "m14",
+						"name": "14",
+						"channelLevel": 203
+					},
+					{
+						"id": "m15",
+						"name": "15",
+						"channelLevel": 218
+					},
+					{
+						"id": "m16",
+						"name": "16",
+						"channelLevel": 233
+					},
+					{
+						"id": "msa",
+						"name": "Sound Active",
+						"channelLevel": 248
+					}
+				]
+			}
+		]
+	}
+}

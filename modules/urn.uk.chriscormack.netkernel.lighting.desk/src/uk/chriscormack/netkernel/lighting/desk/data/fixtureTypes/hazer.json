@@ -1,0 +1,21 @@
+{
+  "type": "hazer",
+  "channelCount": 2,
+  "details": {
+    "channelGroups": [
+      {
+        "name": "Haze Control",
+        "channels": [
+          {
+            "name": "Blower Speed",
+            "channelOffset": 0
+          },
+          {
+            "name": "Haze Volume",
+            "channelOffset": 1
+          }
+        ]
+      }
+    ]
+  }
+}

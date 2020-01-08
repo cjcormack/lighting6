@@ -3,26 +3,26 @@ package uk.chriscormack.netkernel.lighting.artnet
 import ch.bildspur.artnet.ArtNetClient
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.receiveOrNull
 import kotlinx.coroutines.channels.ticker
 import kotlinx.coroutines.selects.select
 import java.util.concurrent.ConcurrentHashMap
-import kotlin.math.ceil
-import kotlin.math.floor
 import kotlin.math.max
 
 data class ChannelChange(val newValue: Int, val fadeMs: Long)
 
+@ExperimentalCoroutinesApi
 @ObsoleteCoroutinesApi
 class ArtNetController(val universe: Int, val subnet: Int) {
+    internal val fadeTickMs = 10
+
     private val artnet = ArtNetClient()
 
     private val channelChangeChannels: Map<Int, Channel<ChannelUpdatePayload>>
 
-    private val transmissionNeeded = Channel<Unit>(Channel.Factory.CONFLATED)
+    internal val transmissionNeeded = Channel<Unit>(Channel.Factory.CONFLATED)
 
-    private val currentValues = ConcurrentHashMap<Int, Short>()
+    internal val currentValues = ConcurrentHashMap<Int, Short>()
 
     private var previousSentDmxData = ByteArray(512)
 
@@ -34,12 +34,12 @@ class ArtNetController(val universe: Int, val subnet: Int) {
         channelChangeChannels = HashMap()
 
         GlobalScope.launch {
-            run(this)
+            runTransmissionChannel()
 
             (1..512).forEach { channelNo ->
                 val channel = Channel<ChannelUpdatePayload>(Channel.Factory.CONFLATED)
                 channelChangeChannels[channelNo] = channel
-                runChannelChanger(this, channelNo, channel)
+                runChannelChangerChannel(channelNo, channel)
             }
         }
     }
@@ -50,19 +50,9 @@ class ArtNetController(val universe: Int, val subnet: Int) {
         var valuesChanged = false
 
         runBlocking {
-            valuesToSet.forEach {
-                if (validateChannelUpdate(it.first, it.second)) {
+            valuesToSet.forEach { (channelNo, channelChange) ->
+                if (doSetChannel(channelNo, channelChange)) {
                     valuesChanged = true
-
-                    val changeChannel = channelChangeChannels[it.first]
-                    checkNotNull(changeChannel)
-
-                    val updateDoneChannel = Channel<Unit>()
-
-                    launch {
-                        changeChannel.send(ChannelUpdatePayload(it.second, updateDoneChannel))
-                        updateDoneChannel.receive()
-                    }
                 }
             }
         }
@@ -74,43 +64,45 @@ class ArtNetController(val universe: Int, val subnet: Int) {
         }
     }
 
-    fun setValue(channelNo: Int, channelValue: Int) {
-        if (!doSetValue(channelNo, channelValue)) return
+    fun setValue(channelNo: Int, channelChange: ChannelChange) {
+        val hasUpdated = runBlocking {
+            doSetChannel(channelNo, channelChange)
+        }
 
-        runBlocking {
-            transmissionNeeded.send(Unit)
+        if (hasUpdated) {
+            runBlocking {
+                transmissionNeeded.send(Unit)
+            }
         }
     }
 
-    private fun validateChannelUpdate(channelNo: Int, update: ChannelChange): Boolean {
+    fun setValue(channelNo: Int, channelValue: Int, fadeMs: Long = 0) {
+        setValue(channelNo, ChannelChange(channelValue, fadeMs))
+    }
+
+    private fun CoroutineScope.doSetChannel(channelNo: Int, channelChange: ChannelChange): Boolean {
         if (channelNo < 1 || channelNo > 512) {
             return false
         }
-        if (update.newValue < 0 || update.newValue > 255) {
+        if (channelChange.newValue < 0 || channelChange.newValue > 255) {
             return false
+        }
+
+        val changeChannel = channelChangeChannels[channelNo]
+        checkNotNull(changeChannel)
+
+        val updateDoneChannel = Channel<Unit>()
+
+        launch {
+            changeChannel.send(ChannelUpdatePayload(channelChange, updateDoneChannel))
+            updateDoneChannel.receive()
         }
 
         return true
     }
 
-    private fun doSetValue(channelNo: Int, channelValue: Int): Boolean {
-        if (channelNo < 1 || channelNo > 512) {
-            return false
-        }
-        if (channelValue < 0 || channelValue > 255) {
-            return false
-        }
-
-        if (channelValue == 0) {
-            currentValues.remove(channelNo)
-        } else {
-            currentValues[channelNo] = channelValue.toShort()
-        }
-        return true
-    }
-
-    fun getValue(channelNo: Int): Short {
-        return currentValues[channelNo] ?: 0
+    fun getValue(channelNo: Int): Int {
+        return currentValues[channelNo]?.toInt() ?: 0
     }
 
     fun registerListener(listener: IChannelChangeListener) {
@@ -127,9 +119,7 @@ class ArtNetController(val universe: Int, val subnet: Int) {
         transmissionNeeded.close()
     }
 
-
-    @ObsoleteCoroutinesApi
-    private suspend fun run(coroutineScope: CoroutineScope) {
+    private fun CoroutineScope.runTransmissionChannel() {
         var isClosed = false
 
         sendCurrentValues()
@@ -138,7 +128,7 @@ class ArtNetController(val universe: Int, val subnet: Int) {
 
         var consecutiveErrors = 0
 
-        coroutineScope.launch(newSingleThreadContext("ArtNetThread")) {
+        launch(newSingleThreadContext("ArtNetThread")) {
             while(coroutineContext.isActive && !isClosed) {
                 try {
                     select<Unit> {
@@ -176,21 +166,13 @@ class ArtNetController(val universe: Int, val subnet: Int) {
         }
     }
 
-    private fun runChannelChanger(coroutineScope: CoroutineScope, channelNo: Int, channel: Channel<ChannelUpdatePayload>) {
+    private fun CoroutineScope.runChannelChangerChannel(channelNo: Int, channel: Channel<ChannelUpdatePayload>) {
         var isClosed = false
 
-        var ticker: ReceiveChannel<Unit>? = null
-        var currentFadeTargetValue = 0.toShort()
-        var targetTickCount = 0
-        var tickerStartValue = 0.toShort()
-        var tickerLastSetValue = 0.toShort()
-        var tickerStartMs = 0L
-        var tickerLengthMs = 0L
+        launch(Dispatchers.Default) {
+            var tickerState: TickerState? = null
 
-        var currentTickStepValue = 0.0
-
-        coroutineScope.launch(Dispatchers.Default) {
-            while (coroutineScope.isActive && !isClosed) {
+            while (isActive && !isClosed) {
                 select<Unit> {
                     channel.onReceiveOrNull {
                         if (it == null) {
@@ -198,37 +180,20 @@ class ArtNetController(val universe: Int, val subnet: Int) {
                             return@onReceiveOrNull
                         }
 
-                        ticker?.cancel()
-                        ticker = null
-
-                        val currentValue = currentValues[channelNo] ?: 0
+                        tickerState?.ticker?.cancel()
+                        tickerState = null
 
                         val numberOfSteps = if (it.change.fadeMs == 0L) {
                             1
                         } else {
-                            max(1, (it.change.fadeMs / 5).toInt())
+                            max(1, (it.change.fadeMs / fadeTickMs).toInt())
                         }
 
-                        val valueChange = it.change.newValue - currentValue
-                        val stepMs = it.change.fadeMs / numberOfSteps
-                        currentTickStepValue = valueChange.toDouble() / numberOfSteps
-
                         if (numberOfSteps > 1) {
-                            targetTickCount = numberOfSteps
-                            tickerStartValue = currentValue
-                            currentFadeTargetValue = it.change.newValue.toShort()
-                            ticker = ticker(stepMs, context = coroutineContext)
-                            tickerStartMs = System.currentTimeMillis()
-                            tickerLengthMs = it.change.fadeMs
-
-                            val newValue = if (currentTickStepValue > 0) {
-                                floor(currentValue + currentTickStepValue).toShort()
-                            } else {
-                                ceil(currentValue + currentTickStepValue).toShort()
+                            tickerState = TickerState(this@ArtNetController, coroutineContext, channelNo, numberOfSteps, it)
+                            if (tickerState!!.setValue(0)) {
+                                tickerState = null
                             }
-                            currentValues[channelNo] = newValue
-
-                            tickerLastSetValue = newValue
                         } else {
                             currentValues[channelNo] = it.change.newValue.toShort()
                         }
@@ -236,33 +201,13 @@ class ArtNetController(val universe: Int, val subnet: Int) {
                         it.updateNotificationChannel.send(Unit)
                     }
 
-                    val currentTicker = ticker
-                    if (currentTicker != null) {
-                        currentTicker.onReceive {
-                            val timeRunningMs = System.currentTimeMillis() - tickerStartMs
-                            val currentTickCount = timeRunningMs / 5.0
-
-                            val newValue: Short
-                            if (timeRunningMs >= tickerLengthMs) {
-                                currentTicker.cancel()
-                                ticker = null
-                                newValue = currentFadeTargetValue
-                            } else {
-                                newValue = if (currentTickStepValue > 0) {
-                                    floor(tickerStartValue + (currentTickCount * currentTickStepValue)).toShort()
-                                } else {
-                                    ceil(tickerStartValue + (currentTickCount * currentTickStepValue)).toShort()
-                                }
+                    if (tickerState != null) {
+                        tickerState!!.ticker.onReceive {
+                            if (tickerState!!.setValue()) {
+                                tickerState = null
                             }
-
-                            currentValues[channelNo] = newValue
-
-                            if (newValue != tickerLastSetValue) {
-                                transmissionNeeded.send(Unit)
-                            }
-                            tickerLastSetValue = newValue
-
                         }
+
                     }
                 }
             }

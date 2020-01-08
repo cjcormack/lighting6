@@ -1,0 +1,17 @@
+<h4 ng-if="!channelGroup.collapsible" class="ui header">
+  {{channelGroup.name}}
+</h4>
+<h4 ng-if="channelGroup.collapsible" class="ui header" ng-click="channelGroup.collapsed = channelGroup.collapsed ? false : true" style="cursor: pointer">
+  <i style="width: 18px; height: 18px; margin-left: 0; margin-right: 0;" class="angle icon" ng-class="{right: channelGroup.collapsed, down: !channelGroup.collapsed}"></i>
+  {{channelGroup.name}}
+</h4>
+
+<div class="field" ng-repeat="channel in channelGroup.channels" ng-show="!channelGroup.collapsible || !channelGroup.collapsed">
+  <label>
+    {{channel.name}}
+    <input type="checkbox" ng-if="channel.canDisable" style="margin-left: 2px; margin-top: 4px" ng-model="!channel.disabled" ng-change="$parent.toggleDisabled(channel)">
+  </label>
+  <div class="ui left labeled">
+    <channel-slider channelid="channel.channelOffset + firstChannel" maxlevel="channel.maxLevel" minlevel="channel.minLevel" reverse="channel.reverse" enabled="channel.enabled"/>
+  </div>
+</div>

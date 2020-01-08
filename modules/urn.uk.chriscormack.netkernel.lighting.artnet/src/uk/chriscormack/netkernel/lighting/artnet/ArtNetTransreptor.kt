@@ -1,5 +1,7 @@
 package uk.chriscormack.netkernel.lighting.artnet
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 import org.netkernel.lang.kotlin.knkf.context.RequestContext
 import org.netkernel.lang.kotlin.knkf.context.TransreptorRequestContext
 import org.netkernel.lang.kotlin.knkf.context.sourcePrimary
@@ -7,6 +9,8 @@ import org.netkernel.lang.kotlin.knkf.endpoints.KotlinTransreptor
 import org.netkernel.lang.kotlin.util.firstValue
 import org.netkernel.mod.hds.IHDSDocument
 
+@ObsoleteCoroutinesApi
+@ExperimentalCoroutinesApi
 class ArtNetTransreptor: KotlinTransreptor<Any, ArtNetController>() {
     init {
         toRepresentation(ArtNetController::class.java)

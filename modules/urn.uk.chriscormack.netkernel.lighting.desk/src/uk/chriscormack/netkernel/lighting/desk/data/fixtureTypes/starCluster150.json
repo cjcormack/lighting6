@@ -1,0 +1,138 @@
+{
+  "type": "starCluster150",
+  "channelCount": 5,
+  "blackoutChannelOffsets": [
+    0
+  ],
+  "details": {
+    "modeSelectors": [
+      {
+        "id": "laserMode",
+        "name": "Laser Mode",
+        "channelOffset": 0,
+        "modes": [
+          {
+            "id": "off",
+            "name": "Off",
+            "channelLevel": 0
+          },
+          {
+            "id": "auto",
+            "name": "Auto",
+            "channelLevel": 51
+          },
+          {
+            "id": "soundActivated",
+            "name": "Sound-activated",
+            "channelLevel": 101
+          },
+          {
+            "id": "dmx",
+            "name": "DMX Mode",
+            "channelLevel": 151
+          }
+        ]
+      },
+      {
+        "id": "redMode",
+        "name": "Red Mode",
+        "channelOffset": 3,
+        "modes": [
+          {
+            "id": "off",
+            "name": "Off",
+            "channelLevel": 0
+          },
+          {
+            "id": "on",
+            "name": "On",
+            "channelLevel": 5
+          },
+          {
+            "id": "strobe",
+            "name": "Strobe",
+            "channelLevel": 11
+          },
+          {
+            "id": "sound",
+            "name": "Sound",
+            "channelLevel": 255
+          }
+        ]
+      },
+      {
+        "id": "greenMode",
+        "name": "Green Mode",
+        "channelOffset": 4,
+        "modes": [
+          {
+            "id": "off",
+            "name": "Off",
+            "channelLevel": 0
+          },
+          {
+            "id": "on",
+            "name": "On",
+            "channelLevel": 5
+          },
+          {
+            "id": "strobe",
+            "name": "Strobe",
+            "channelLevel": 11
+          },
+          {
+            "id": "sound",
+            "name": "Sound",
+            "channelLevel": 255
+          }
+        ]
+      }
+    ],
+    "channelGroups": [
+      {
+        "name": "Movement Control",
+        "collapsible": true,
+        "collapsed": false,
+        "channels": [
+          {
+            "name": "Rotation Clockwise",
+            "channelOffset": 1,
+            "defaultLevel": 130,
+            "minLevel": 4,
+            "maxLevel": 126
+          },
+          {
+            "name": "Rotation Anti-clockwise",
+            "channelOffset": 1,
+            "defaultLevel": 130,
+            "minLevel": 133,
+            "maxLevel": 255
+          },
+          {
+            "name": "Swing",
+            "channelOffset": 2
+          }
+        ]
+      },
+      {
+        "name": "Strobe Control",
+        "collapsible": true,
+        "collapsed": true,
+        "channels": [
+          {
+            "name": "Red Strobe",
+            "channelOffset": 3,
+            "minLevel": 11,
+            "maxLevel": 254
+          },
+          {
+            "name": "Green Strobe",
+            "channelOffset": 4,
+            "minLevel": 11,
+            "maxLevel": 254
+          }
+        ]
+      }
+    ]
+  }
+}

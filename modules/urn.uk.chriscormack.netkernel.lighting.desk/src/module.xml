@@ -14,7 +14,7 @@
 		<dynamic/>
 	</system>
 
-	<rootspace>
+	<rootspace uri="urn:uk:chriscormack:netkernel:lighting:desk:model" public="true" name="Lighting / Desk / Model">
 		<literal uri="res:/etc/ArtNetConfig.xml" type="xml" public="false">
 			<config>
 				<universe>0</universe>
@@ -22,20 +22,9 @@
 			</config>
 		</literal>
 
-		<literal uri="res:/etc/system/SimpleDynamicImportHook.xml" type="xml">
-			<connection>
-				<type>HTTPFulcrum</type>
-			</connection>
-		</literal>
-
 		<transport>
 			<prototype>ArtNetTransport</prototype>
 		</transport>
-
-		<fileset>
-			<regex>res:/lighting6/index.html</regex>
-			<rewrite>res:/index.html</rewrite>
-		</fileset>
 
 		<accessor>
 			<grammar>
@@ -51,6 +40,7 @@
 			<uri>urn:uk:chriscormack:netkernel:lighting:artNet</uri>
 			<private/>
 		</import>
+
 		<import>
 			<uri>urn:org:netkernel:ext:layer1</uri>
 			<private/>
@@ -62,6 +52,94 @@
 		<import>
 			<uri>urn:org:netkernel:lang:kotlin</uri>
 			<private/>
+		</import>
+	</rootspace>
+
+	<rootspace uri="urn:uk:chriscormack:netkernel:lighting:desk:frontend" public="true" name="Lighting / Desk / Frontend">
+		<literal uri="res:/etc/system/SimpleDynamicImportHook.xml" type="xml">
+			<connection>
+				<type>HTTPFulcrum</type>
+			</connection>
+		</literal>
+
+		<mapper>
+			<config>
+				<endpoint>
+					<grammar>res:/lighting/</grammar>
+					<header name="mime">text/html</header>
+					<request>
+						<identifier>res:/uk/chriscormack/netkernel/lighting/desk/frontend/index.xml</identifier>
+					</request>
+				</endpoint>
+
+				<import>res:/uk/chriscormack/netkernel/lighting/desk/data/mapperConfig.xml</import>
+				<import>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/css/mapperConfig.xml</import>
+				<import>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/images/mapperConfig.xml</import>
+				<import>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/js/mapperConfig.xml</import>
+				<import>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/semantic-ui/mapperConfig.xml</import>
+				<import>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/partials/mapperConfig.xml</import>
+
+				<endpoint>
+					<grammar>ws:/lighting/</grammar>
+					<verbs>NEW</verbs>
+					<request>
+						<identifier>active:java</identifier>
+						<argument name="class">uk.chriscormack.netkernel.lighting.desk.frontend.LightingSocketAccessor</argument>
+					</request>
+				</endpoint>
+				<endpoint>
+					<grammar>
+						<active>
+							<identifier>ws:/lighting/</identifier>
+							<argument name="socketid"/>
+						</active>
+					</grammar>
+					<verbs>SINK,DELETE</verbs>
+					<request>
+						<identifier>active:java</identifier>
+						<argument name="class">uk.chriscormack.netkernel.lighting.desk.frontend.LightingSocketAccessor</argument>
+						<varargs/>
+					</request>
+				</endpoint>
+			</config>
+			<space>
+				<fileset>
+					<regex>res:/uk/chriscormack/netkernel/lighting/desk/(frontend|data)/.*</regex>
+				</fileset>
+			</space>
+		</mapper>
+
+		<import>
+			<uri>urn:uk:chriscormack:netkernel:lighting:desk:model</uri>
+			<private/>
+		</import>
+
+		<!-- TODO: refactor so that the following import is not needed -->
+		<import>
+			<uri>urn:uk:chriscormack:netkernel:lighting:artNet</uri>
+			<private/>
+		</import>
+
+		<import>
+			<uri>urn:org:netkernel:ext:layer1</uri>
+			<private/>
+		</import>
+		<import>
+			<uri>urn:org:netkernel:mod:hds</uri>
+			<private/>
+		</import>
+		<import>
+			<uri>urn:org:netkernel:lang:kotlin</uri>
+			<private/>
+		</import>
+
+		<import>
+			<uri>urn:org:netkernel:tpt:http</uri>
+			<private/>
+		</import>
+		<import>
+			<private/>
+			<uri>urn:org:netkernel:json:core</uri>
 		</import>
 	</rootspace>
 </module>

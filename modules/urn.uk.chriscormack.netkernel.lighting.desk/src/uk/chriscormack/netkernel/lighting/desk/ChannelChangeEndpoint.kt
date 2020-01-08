@@ -4,13 +4,41 @@ import org.netkernel.lang.kotlin.dsl.declarativeRequest.declarativeRequest
 import org.netkernel.lang.kotlin.knkf.context.RequestContext
 import org.netkernel.lang.kotlin.knkf.context.SourceRequestContext
 import org.netkernel.lang.kotlin.knkf.endpoints.KotlinAccessor
+import org.netkernel.lang.kotlin.util.firstValue
 import org.netkernel.mod.hds.IHDSDocument
+import uk.chriscormack.netkernel.lighting.desk.frontend.LightingSocketAccessor
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 class ChannelChangeEndpoint: KotlinAccessor() {
+    companion object {
+        private val valuesLock = ReentrantReadWriteLock()
+        private val lightingValues = HashMap<Int, Int>()
+
+        fun readCurrentValues(action: (Map<Int, Int>) -> Unit) {
+            valuesLock.read {
+                action(lightingValues)
+            }
+        }
+    }
+
+    init {
+        declareThreadSafe(false)
+    }
+
     override fun RequestContext.postCommission() {
         source<Unit>("active:artnet-addChannelChangeListener") {
             argumentByValue("request") {
                 declarativeRequest("active:channelsChanged")
+            }
+        }
+
+        val channelNodes = source<IHDSDocument>("active:artnet-batchChannel")
+
+        valuesLock.write {
+            channelNodes.reader.getNodes("//channel").forEach {
+                lightingValues[it.firstValue("no", this)] = it.firstValue("value", this)
             }
         }
     }
@@ -21,9 +49,23 @@ class ChannelChangeEndpoint: KotlinAccessor() {
                 declarativeRequest("active:channelsChanged")
             }
         }
+
+        valuesLock.write {
+            lightingValues.clear()
+        }
     }
 
     override fun SourceRequestContext.onSource() {
-        val changedChannelNode = source<IHDSDocument>("arg:operand")
+        val changedChannelNodes = source<IHDSDocument>("arg:operand")
+
+        valuesLock.write {
+            changedChannelNodes.reader.getNodes("//channel").forEach {
+                val no = it.firstValue<Int>("no", this)
+                val value = it.firstValue<Int>("value", this)
+
+                lightingValues[no] = value
+                LightingSocketAccessor.channelUpdated(no, value)
+            }
+        }
     }
 }

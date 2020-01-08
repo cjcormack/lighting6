@@ -1,0 +1,6 @@
+{
+  "name": "movingHead-1",
+  "description": "Moving Head (1)",
+  "firstChannel": 50,
+  "type": "movingHead"
+}

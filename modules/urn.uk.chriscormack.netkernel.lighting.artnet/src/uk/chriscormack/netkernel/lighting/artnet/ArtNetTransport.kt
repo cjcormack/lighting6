@@ -1,11 +1,13 @@
 package uk.chriscormack.netkernel.lighting.artnet
 
-import org.netkernel.lang.kotlin.knkf.Identifier
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 import org.netkernel.lang.kotlin.knkf.context.RequestContext
 import org.netkernel.lang.kotlin.knkf.endpoints.KotlinTransport
-import java.util.concurrent.ConcurrentHashMap
 
-class ArtNetTransport: KotlinTransport(), IChannelChangeListener {
+@ObsoleteCoroutinesApi
+@ExperimentalCoroutinesApi
+class ArtNetTransport: KotlinTransport() {
     lateinit var controller: ArtNetController
 
     internal companion object Instances {
@@ -18,7 +20,6 @@ class ArtNetTransport: KotlinTransport(), IChannelChangeListener {
 
     override fun RequestContext.postCommission() {
         controller = source("param:config")
-        controller.registerListener(this@ArtNetTransport)
         instanceByController[controller] = this@ArtNetTransport
     }
 
@@ -29,19 +30,12 @@ class ArtNetTransport: KotlinTransport(), IChannelChangeListener {
 
         instanceByController.remove(controller)
 
-        controller.unregisterListener(this@ArtNetTransport)
         controller.close()
-    }
-
-    override fun channelsChanged(changes: Map<Int, Int>) {
-        val cutRequest = transportContext.sourceRequest<Unit>("active:cutGoldenThread")
-        changes.forEach { (channelNo, _) ->
-            cutRequest.argument("id", Identifier("gt:/lighting/${controller.universe}/${controller.subnet}/$channelNo"))
-        }
-        cutRequest.issue()
     }
 }
 
+@ObsoleteCoroutinesApi
+@ExperimentalCoroutinesApi
 val ArtNetController.transport: ArtNetTransport
     get() {
         return checkNotNull(ArtNetTransport.getInstance(this))

@@ -1,22 +1,20 @@
 package uk.chriscormack.netkernel.lighting.artnet
 
-import org.netkernel.lang.kotlin.knkf.Identifier
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 import org.netkernel.lang.kotlin.knkf.context.SinkRequestContext
 import org.netkernel.lang.kotlin.knkf.context.SourceRequestContext
 import org.netkernel.lang.kotlin.knkf.context.sourcePrimary
 
+@ObsoleteCoroutinesApi
+@ExperimentalCoroutinesApi
 class ChannelAccessor: BaseArtNetAccessor() {
     override fun SourceRequestContext.onSource() {
         val controller: ArtNetController = sourceConfig()
         val channelNo = source<Int>("arg:channelNo")
 
-        source<Unit>("active:attachGoldenThread") {
-            argument("id", Identifier("gt:/lighting/${controller.universe}/${controller.subnet}"))
-            argument("id", Identifier("gt:/lighting/${controller.universe}/${controller.subnet}/channelNo"))
-        }
-
-        response(controller.getValue(channelNo))
-
+        val response = response(controller.getValue(channelNo))
+        response.nkfResponse.setNoCache()
     }
 
     override fun SinkRequestContext.onSink() {

@@ -1,0 +1,63 @@
+{
+  "type": "outdoor",
+  "channelCount": 8,
+  "blackoutChannelOffsets": [
+    0
+  ],
+  "details": {
+    "rgbMixer": {
+      "redChannelOffset": 1,
+      "greenChannelOffset": 2,
+      "blueChannelOffset": 3
+    },
+    "modeSelectors": [
+      {
+        "id": "strobeMode",
+        "name": "Strobe Mode",
+        "channelOffset": 4,
+        "modes": [
+          {
+            "id": "none",
+            "name": "None",
+            "channelLevel": 0
+          },
+          {
+            "id": "slow",
+            "name": "25%",
+            "channelLevel": 64
+          },
+          {
+            "id": "medium",
+            "name": "50%",
+            "channelLevel": 127
+          },
+          {
+            "id": "fast",
+            "name": "75%",
+            "channelLevel": 191
+          },
+          {
+            "id": "ultra",
+            "name": "100%",
+            "channelLevel": 255
+          }
+        ]
+      }
+    ],
+    "channelGroups": [
+      {
+        "name": "Colour Control",
+        "channels": [
+          {
+            "name": "Dimmer",
+            "channelOffset": 0
+          },
+          {
+            "name": "Strobe",
+            "channelOffset": 4
+          }
+        ]
+      }
+    ]
+  }
+}

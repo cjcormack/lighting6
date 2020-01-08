@@ -1,8 +1,10 @@
 package uk.chriscormack.netkernel.lighting.artnet
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 import org.netkernel.lang.kotlin.knkf.context.RequestContext
 import org.netkernel.lang.kotlin.knkf.context.SourceRequestContext
-import org.netkernel.layer0.nkf.*
+import org.netkernel.layer0.nkf.INKFRequest
 import org.netkernel.layer0.urii.ParsedIdentifierImpl
 import org.netkernel.layer0.util.RequestBuilder
 import org.netkernel.layer0.util.XMLUtils
@@ -10,9 +12,10 @@ import org.netkernel.mod.hds.HDSFactory
 import org.netkernel.request.impl.RequestScopeLevelImpl
 import org.netkernel.urii.IResolution
 import org.netkernel.urii.ISpace
-import org.netkernel.util.Utils
 import org.w3c.dom.Document
 
+@ObsoleteCoroutinesApi
+@ExperimentalCoroutinesApi
 class ChannelChangeListenerAccessor: BaseArtNetAccessor() {
     override fun SourceRequestContext.onSource() {
         val type: String = nkfContext.thisRequest.getArgumentValue(ParsedIdentifierImpl.ARG_ACTIVE_TYPE)
@@ -37,7 +40,7 @@ class ChannelChangeListenerAccessor: BaseArtNetAccessor() {
         controller.unregisterListener(ChannelChangeListener(controller, this))
     }
 
-    class ChannelChangeListener(val controller: ArtNetController, context: RequestContext): IChannelChangeListener {
+    internal class ChannelChangeListener(val controller: ArtNetController, context: RequestContext): IChannelChangeListener {
         private val requestSender: RequestContext.() -> INKFRequest
         private val issuingSpace: ISpace
         val requestString: String
@@ -111,11 +114,5 @@ class ChannelChangeListenerAccessor: BaseArtNetAccessor() {
             result = 31 * result + requestString.hashCode()
             return result
         }
-
-//        override fun hashCode(): Int {
-//            return requestString.hashCode() xor issuingSpace.hashCode()
-//        }
-
-
     }
 }

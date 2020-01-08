@@ -1,0 +1,6 @@
+<label>
+  {{modeSelector.name}}
+</label>
+<div class="ui buttons">
+  <div class="ui button" ng-repeat="mode in modeSelector.modes" ng-if="!mode.hidden" ng-class="{active: currentActive == mode}" ng-click="selectMode(mode)">{{mode.name}}</div>
+</div>

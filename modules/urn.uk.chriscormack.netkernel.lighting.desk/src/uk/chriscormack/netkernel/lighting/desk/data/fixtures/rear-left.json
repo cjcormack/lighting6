@@ -1,0 +1,6 @@
+{
+  "name": "rear-left",
+  "description": "Rear Left",
+  "firstChannel": 1,
+  "type": "hex"
+}

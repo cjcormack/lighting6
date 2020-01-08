@@ -1,0 +1,12 @@
+<div class="ui segment" style="height: 82px">
+	<h2 class="ui header" ng-if="trackDetails.name && trackDetails.artist" ng-if="trackDetails.name && trackDetails.artist">
+		<i class="icon" ng-class="{play: trackDetails.isPlaying, pause: !trackDetails.isPlaying}"></i>
+		<div class="content">
+			{{ trackDetails.name }}
+			<div class="sub header">{{ trackDetails.artist }}</div>
+		</div>
+	</h2>
+	<span ng-if="!trackDetails.name || !trackDetails.artist">
+		No track details
+	</span>
+</div>

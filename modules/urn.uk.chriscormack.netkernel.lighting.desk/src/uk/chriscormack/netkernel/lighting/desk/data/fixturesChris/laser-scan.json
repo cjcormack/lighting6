@@ -1,0 +1,6 @@
+{
+  "name": "laser-scan",
+  "description": "Laser (laserScan170rgy)",
+  "firstChannel": 94,
+  "type": "laserScan170rgy"
+}

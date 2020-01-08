@@ -1,6 +1,7 @@
 package uk.chriscormack.netkernel.lighting.artnet
 
-import org.netkernel.lang.kotlin.knkf.Identifier
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 import org.netkernel.lang.kotlin.knkf.context.SinkRequestContext
 import org.netkernel.lang.kotlin.knkf.context.SourceRequestContext
 import org.netkernel.lang.kotlin.knkf.context.sourcePrimary
@@ -9,6 +10,8 @@ import org.netkernel.lang.kotlin.util.values
 import org.netkernel.mod.hds.HDSFactory
 import org.netkernel.mod.hds.IHDSDocument
 
+@ExperimentalCoroutinesApi
+@ObsoleteCoroutinesApi
 class BatchChannelAccessor: BaseArtNetAccessor() {
     override fun SourceRequestContext.onSource() {
         val controller: ArtNetController = sourceConfig()
@@ -22,22 +25,15 @@ class BatchChannelAccessor: BaseArtNetAccessor() {
             1..512
         }
 
-        val attachGTRequest = sourceRequest<Unit>("active:attachGoldenThread") {
-            argument("id", Identifier("gt:/lighting/${controller.universe}/${controller.subnet}"))
-        }
-
         channels.forEach { channelNo ->
             resultBuilder.pushNode("channel")
             resultBuilder.addNode("no", channelNo)
             resultBuilder.addNode("value", controller.getValue(channelNo))
             resultBuilder.popNode()
-
-            attachGTRequest.argument("id", Identifier("gt:/lighting/${controller.universe}/${controller.subnet}/$channelNo"))
         }
 
-        attachGTRequest.issue()
-
-        response(resultBuilder.toDocument(false))
+        val response = response(resultBuilder.toDocument(false))
+        response.nkfResponse.setNoCache()
     }
 
     override fun SinkRequestContext.onSink() {

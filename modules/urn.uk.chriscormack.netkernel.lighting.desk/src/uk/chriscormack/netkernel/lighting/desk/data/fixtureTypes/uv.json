@@ -1,0 +1,72 @@
+{
+  "type": "uv",
+  "channelCount": 1,
+  "blackoutChannelOffsets": [
+    0
+  ],
+  "details": {
+    "modeSelectors": [
+      {
+        "id": "uvMode",
+        "name": "UV Mode",
+        "channelOffset": 0,
+        "modes": [
+          {
+            "id": "off",
+            "name": "Off",
+            "channelLevel": 0
+          },
+          {
+            "id": "on",
+            "name": "On",
+            "channelLevel": 6
+          },
+          {
+            "id": "full",
+            "name": "Full On",
+            "channelLevel": 190
+          },
+          {
+            "id": "sound",
+            "name": "StL (pulse)",
+            "channelLevel": 191,
+            "hidden": true
+          },
+          {
+            "id": "sound",
+            "name": "StL (strobe)",
+            "channelLevel": 200
+          },
+          {
+            "id": "strobe-slow",
+            "name": "Strobe Slow",
+            "channelLevel": 201,
+            "hidden": true
+          },
+          {
+            "id": "strobe-fast",
+            "name": "Strobe FUll",
+            "channelLevel": 243
+          },
+          {
+            "id": "on2",
+            "name": "On",
+            "channelLevel": 248,
+            "hidden": true
+          }
+        ]
+      }
+    ],
+    "channelGroups": [
+      {
+        "name": "Channels",
+        "channels": [
+          {
+            "name": "Intensity",
+            "channelOffset": 0
+          }
+        ]
+      }
+    ]
+  }
+}

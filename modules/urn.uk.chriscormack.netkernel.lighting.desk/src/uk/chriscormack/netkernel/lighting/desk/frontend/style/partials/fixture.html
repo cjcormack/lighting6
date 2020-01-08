@@ -1,0 +1,24 @@
+<div class="ui segment">
+  <h3 class="ui header">
+    {{fixture.description}}
+  </h3>
+
+  <div ng-if="fixtureType.details.rgbMixer" class="ui form segment" colour-selector=""
+       redchannel="fixtureType.details.rgbMixer.redChannelOffset + fixture.firstChannel"
+       greenchannel="fixtureType.details.rgbMixer.greenChannelOffset + fixture.firstChannel"
+       bluechannel="fixtureType.details.rgbMixer.blueChannelOffset + fixture.firstChannel"/>
+
+  <div class="ui form segment" ng-if="fixtureType.details.modeSelectors || fixtureType.details.modeToggles">
+    <h4 class="ui header">Modes</h4>
+    <div class="ui vertical fluid buttons" ng-if="fixtureType.details.modeToggles">
+      <div mode-toggle="" modetoggle="modeToggle" ng-repeat="modeToggle in fixtureType.details.modeToggles" channel="fixture.firstChannel+modeToggle.channelOffset"></div>
+    </div>
+    <div mode-selector="" modeselector="modeSelector" ng-repeat="modeSelector in fixtureType.details.modeSelectors"
+         channel="fixture.firstChannel+modeSelector.channelOffset"/>
+  </div>
+  <div pattern-selector="" class="ui form segment" ng-if="fixtureType.details.patternControl"
+       patterns="fixtureType.details.patternControl.patterns"
+       groupchannel="fixtureType.details.patternControl.groupChannelOffset + fixture.firstChannel"
+       patternchannel="fixtureType.details.patternControl.patternChannelOffset + fixture.firstChannel"/>
+  <div channel-group="" class="ui form segment" ng-repeat="channelGroup in fixtureType.details.channelGroups" channelgroup="channelGroup" firstchannel="fixture.firstChannel" />
+</div>

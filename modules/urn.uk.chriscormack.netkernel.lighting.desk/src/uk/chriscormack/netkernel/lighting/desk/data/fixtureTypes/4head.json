@@ -1,0 +1,139 @@
+{
+  "type": "hex",
+  "channelCount": 7,
+  "blackoutChannelOffsets": [
+    0, 1, 2, 3
+  ],
+  "details": {
+    "modeSelectors": [
+      {
+        "id": "redMode",
+        "name": "Red Mode",
+        "channelOffset": 0,
+        "modes": [
+          {
+            "id": "none",
+            "name": "None",
+            "channelLevel": 0
+          },
+          {
+            "id": "one",
+            "name": "One",
+            "channelLevel": 7
+          },
+          {
+            "id": "two",
+            "name": "Two",
+            "channelLevel": 67
+          },
+          {
+            "id": "three",
+            "name": "Three",
+            "channelLevel": 130
+          },
+          {
+            "id": "all",
+            "name": "All",
+            "channelLevel": 255
+          }
+        ]
+      },
+      {
+        "id": "greenMode",
+        "name": "Green Mode",
+        "channelOffset": 1,
+        "modes": [
+          {
+            "id": "none",
+            "name": "None",
+            "channelLevel": 0
+          },
+          {
+            "id": "one",
+            "name": "One",
+            "channelLevel": 7
+          },
+          {
+            "id": "two",
+            "name": "Two",
+            "channelLevel": 67
+          },
+          {
+            "id": "three",
+            "name": "Three",
+            "channelLevel": 130
+          },
+          {
+            "id": "all",
+            "name": "All",
+            "channelLevel": 255
+          }
+        ]
+      },
+      {
+        "id": "blueMode",
+        "name": "Blue Mode",
+        "channelOffset": 2,
+        "modes": [
+          {
+            "id": "none",
+            "name": "None",
+            "channelLevel": 0
+          },
+          {
+            "id": "one",
+            "name": "One",
+            "channelLevel": 7
+          },
+          {
+            "id": "two",
+            "name": "Two",
+            "channelLevel": 67
+          },
+          {
+            "id": "three",
+            "name": "Three",
+            "channelLevel": 130
+          },
+          {
+            "id": "all",
+            "name": "All",
+            "channelLevel": 255
+          }
+        ]
+      },
+      {
+        "id": "whiteMode",
+        "name": "White Mode",
+        "channelOffset": 3,
+        "modes": [
+          {
+            "id": "none",
+            "name": "None",
+            "channelLevel": 0
+          },
+          {
+            "id": "one",
+            "name": "One",
+            "channelLevel": 7
+          },
+          {
+            "id": "two",
+            "name": "Two",
+            "channelLevel": 67
+          },
+          {
+            "id": "three",
+            "name": "Three",
+            "channelLevel": 130
+          },
+          {
+            "id": "all",
+            "name": "All",
+            "channelLevel": 255
+          }
+        ]
+      }
+    ]
+  }
+}

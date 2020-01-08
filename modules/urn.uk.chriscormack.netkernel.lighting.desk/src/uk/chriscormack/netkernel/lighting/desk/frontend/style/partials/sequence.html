@@ -1,0 +1,23 @@
+<div class="ui grid">
+    <div class="two wide column">
+      <h3 class="ui header">
+        {{sequence.name}}
+      </h3>
+    </div>
+
+    <div class="eleven wide column">
+      <div class="ui celled grid">
+        <div class="row">
+          <div sequence-step="" class="column" ng-class="{'current-step': currentStep}" ng-repeat="step in sequence.steps" step="step" stepid="step" stepno="$index">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="two wide column">
+      <div class="ui vertical fluid buttons" style="clear: both">
+        <div class="ui button" ng-click="activate()">Activate</div>
+      </div>
+    </div>
+  </div>
+</div>

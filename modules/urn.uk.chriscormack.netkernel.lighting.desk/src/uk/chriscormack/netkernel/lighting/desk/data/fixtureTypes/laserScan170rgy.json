@@ -1,0 +1,489 @@
+{
+  "type": "laserScan170rgy",
+  "channelCount": 17,
+  "blackoutChannelOffsets": [
+    0
+  ],
+  "details": {
+    "modeSelectors": [
+      {
+        "id": "laserMode",
+        "name": "Laser Mode",
+        "channelOffset": 0,
+        "modes": [
+          {
+            "id": "off",
+            "name": "Off",
+            "channelLevel": 0
+          },
+          {
+            "id": "auto",
+            "name": "Auto",
+            "channelLevel": 21
+          },
+          {
+            "id": "sound",
+            "name": "Sound-activated",
+            "channelLevel": 101
+          },
+          {
+            "id": "dmx",
+            "name": "DMX Mode",
+            "channelLevel": 221
+          }
+        ]
+      }
+    ],
+    "patternControl": {
+      "groupChannelOffset": 1,
+      "patternChannelOffset": 2,
+      "patterns": [
+        {
+          "name": "CIRCLE_1",
+          "groupLevel": 0,
+          "patternLevel": 0
+        },
+        {
+          "name": "CIRCLE_2",
+          "groupLevel": 0,
+          "patternLevel": 16
+        },
+        {
+          "name": "CIRCLE_3",
+          "groupLevel": 0,
+          "patternLevel": 32
+        },
+        {
+          "name": "SPIRAL",
+          "groupLevel": 0,
+          "patternLevel": 48
+        },
+        {
+          "name": "TRIANGLE",
+          "groupLevel": 0,
+          "patternLevel": 64
+        },
+        {
+          "name": "SQUARE_1",
+          "groupLevel": 0,
+          "patternLevel": 80
+        },
+        {
+          "name": "SQUARE_2",
+          "groupLevel": 0,
+          "patternLevel": 96
+        },
+        {
+          "name": "STAR_ODD",
+          "groupLevel": 0,
+          "patternLevel": 112
+        },
+        {
+          "name": "STAR",
+          "groupLevel": 0,
+          "patternLevel": 128
+        },
+        {
+          "name": "CORNER_BOXES",
+          "groupLevel": 0,
+          "patternLevel": 144
+        },
+        {
+          "name": "COLUMN_BOXES",
+          "groupLevel": 0,
+          "patternLevel": 160
+        },
+        {
+          "name": "ROW_CIRCLE",
+          "groupLevel": 0,
+          "patternLevel": 176
+        },
+        {
+          "name": "SCATTER_CIRCLES",
+          "groupLevel": 0,
+          "patternLevel": 192
+        },
+        {
+          "name": "TWO_ARCS",
+          "groupLevel": 0,
+          "patternLevel": 208
+        },
+        {
+          "name": "FOUR_ARCS",
+          "groupLevel": 0,
+          "patternLevel": 224
+        },
+        {
+          "name": "WAVE_WIDE",
+          "groupLevel": 0,
+          "patternLevel": 240
+        },
+        {
+          "name": "WAVE_NARROW",
+          "groupLevel": 52,
+          "patternLevel": 0
+        },
+        {
+          "name": "SINE_1",
+          "groupLevel": 52,
+          "patternLevel": 16
+        },
+        {
+          "name": "SINE_2",
+          "groupLevel": 52,
+          "patternLevel": 32
+        },
+        {
+          "name": "SINE_4",
+          "groupLevel": 52,
+          "patternLevel": 48
+        },
+        {
+          "name": "BOW_TIE",
+          "groupLevel": 52,
+          "patternLevel": 64
+        },
+        {
+          "name": "LINE_SOLID",
+          "groupLevel": 52,
+          "patternLevel": 80
+        },
+        {
+          "name": "LINE_DASHED",
+          "groupLevel": 52,
+          "patternLevel": 96
+        },
+        {
+          "name": "PLUS",
+          "groupLevel": 52,
+          "patternLevel": 112
+        },
+        {
+          "name": "LINES_PARALLEL_2",
+          "groupLevel": 52,
+          "patternLevel": 128
+        },
+        {
+          "name": "LINE_ZIGZAG",
+          "groupLevel": 52,
+          "patternLevel": 144
+        },
+        {
+          "name": "LINE_ZIGZAG_FINE",
+          "groupLevel": 52,
+          "patternLevel": 160
+        },
+        {
+          "name": "LINES_PARALLEL_6",
+          "groupLevel": 52,
+          "patternLevel": 176
+        },
+        {
+          "name": "SEMI_CIRCLE",
+          "groupLevel": 52,
+          "patternLevel": 192
+        },
+        {
+          "name": "JAGGED",
+          "groupLevel": 52,
+          "patternLevel": 208
+        },
+        {
+          "name": "COMPASS_LINES",
+          "groupLevel": 52,
+          "patternLevel": 224
+        },
+        {
+          "name": "SCATTER_LINES",
+          "groupLevel": 52,
+          "patternLevel": 240
+        },
+        {
+          "name": "PUMPKIN",
+          "groupLevel": 104,
+          "patternLevel": 0
+        },
+        {
+          "name": "SWAG",
+          "groupLevel": 104,
+          "patternLevel": 16
+        },
+        {
+          "name": "COCKTAIL",
+          "groupLevel": 104,
+          "patternLevel": 32
+        },
+        {
+          "name": "TONGUE",
+          "groupLevel": 104,
+          "patternLevel": 48
+        },
+        {
+          "name": "HEART_WINGED",
+          "groupLevel": 104,
+          "patternLevel": 64
+        },
+        {
+          "name": "ALIEN",
+          "groupLevel": 104,
+          "patternLevel": 80
+        },
+        {
+          "name": "FLOWER",
+          "groupLevel": 104,
+          "patternLevel": 96
+        },
+        {
+          "name": "QUESTION_MARK",
+          "groupLevel": 104,
+          "patternLevel": 112
+        },
+        {
+          "name": "EXCLAMATION_MARK",
+          "groupLevel": 104,
+          "patternLevel": 128
+        },
+        {
+          "name": "CANDY_CANE",
+          "groupLevel": 104,
+          "patternLevel": 144
+        },
+        {
+          "name": "FISH",
+          "groupLevel": 104,
+          "patternLevel": 160
+        },
+        {
+          "name": "CLOCK",
+          "groupLevel": 104,
+          "patternLevel": 176
+        },
+        {
+          "name": "FIST",
+          "groupLevel": 104,
+          "patternLevel": 192
+        },
+        {
+          "name": "GIRL_1",
+          "groupLevel": 104,
+          "patternLevel": 208
+        },
+        {
+          "name": "GIRL_2",
+          "groupLevel": 104,
+          "patternLevel": 224
+        },
+        {
+          "name": "GEORDI_LA_FORGE",
+          "groupLevel": 104,
+          "patternLevel": 240
+        },
+        {
+          "name": "TICK",
+          "groupLevel": 156,
+          "patternLevel": 0
+        },
+        {
+          "name": "CROSS",
+          "groupLevel": 156,
+          "patternLevel": 16
+        },
+        {
+          "name": "STICK_MAN",
+          "groupLevel": 156,
+          "patternLevel": 32
+        },
+        {
+          "name": "STICK_LADY",
+          "groupLevel": 156,
+          "patternLevel": 48
+        },
+        {
+          "name": "THUMB_UP",
+          "groupLevel": 156,
+          "patternLevel": 64
+        },
+        {
+          "name": "HAND",
+          "groupLevel": 156,
+          "patternLevel": 80
+        },
+        {
+          "name": "PEACE",
+          "groupLevel": 156,
+          "patternLevel": 96
+        },
+        {
+          "name": "DOVE",
+          "groupLevel": 156,
+          "patternLevel": 112
+        },
+        {
+          "name": "HEART",
+          "groupLevel": 156,
+          "patternLevel": 128
+        },
+        {
+          "name": "OPEN_SIGN",
+          "groupLevel": 156,
+          "patternLevel": 144
+        },
+        {
+          "name": "MOON",
+          "groupLevel": 156,
+          "patternLevel": 160
+        },
+        {
+          "name": "SMILE",
+          "groupLevel": 156,
+          "patternLevel": 176
+        },
+        {
+          "name": "WORD_MUSIC",
+          "groupLevel": 156,
+          "patternLevel": 192
+        },
+        {
+          "name": "WORD_PARTY",
+          "groupLevel": 156,
+          "patternLevel": 208
+        },
+        {
+          "name": "WORD_DANCE",
+          "groupLevel": 156,
+          "patternLevel": 224
+        },
+        {
+          "name": "WORD_HAPPY",
+          "groupLevel": 156,
+          "patternLevel": 240
+        },
+        {
+          "name": "NUM_0",
+          "groupLevel": 208,
+          "patternLevel": 0
+        },
+        {
+          "name": "NUM_1",
+          "groupLevel": 208,
+          "patternLevel": 16
+        },
+        {
+          "name": "NUM_2",
+          "groupLevel": 208,
+          "patternLevel": 32
+        },
+        {
+          "name": "NUM_3",
+          "groupLevel": 208,
+          "patternLevel": 48
+        },
+        {
+          "name": "NUM_4",
+          "groupLevel": 208,
+          "patternLevel": 64
+        },
+        {
+          "name": "NUM_5",
+          "groupLevel": 208,
+          "patternLevel": 80
+        },
+        {
+          "name": "NUM_6",
+          "groupLevel": 208,
+          "patternLevel": 96
+        },
+        {
+          "name": "NUM_7",
+          "groupLevel": 208,
+          "patternLevel": 112
+        },
+        {
+          "name": "NUM_8",
+          "groupLevel": 208,
+          "patternLevel": 128
+        },
+        {
+          "name": "NUM_9",
+          "groupLevel": 208,
+          "patternLevel": 144
+        },
+        {
+          "name": "SYMBOL_AT",
+          "groupLevel": 208,
+          "patternLevel": 160
+        },
+        {
+          "name": "SYMBOL_DOLLAR",
+          "groupLevel": 208,
+          "patternLevel": 176
+        },
+        {
+          "name": "CALIBRATION_PATTERN",
+          "groupLevel": 208,
+          "patternLevel": 240
+        }
+      ]
+    },
+    "channelGroups": [
+      {
+        "name": "Picture Control",
+        "collapsible": true,
+        "collapsed": true,
+        "channels": [
+          {
+            "name": "Zoom",
+            "channelOffset": 5,
+            "maxLevel": 127,
+            "reverse": true
+          },
+          {
+            "name": "Clipping",
+            "channelOffset": 4,
+            "minLevel": 1,
+            "maxLevel": 127
+          }
+        ]
+      },
+      {
+        "name": "Position",
+        "collapsible": true,
+        "collapsed": true,
+        "channels": [
+          {
+            "name": "X-axis",
+            "channelOffset": 13,
+            "maxLevel": 127
+          },
+          {
+            "name": "Y-axis",
+            "channelOffset": 15,
+            "maxLevel": 127
+          }
+        ]
+      },
+      {
+        "name": "Roll",
+        "collapsible": true,
+        "collapsed": true,
+        "channels": [
+          {
+            "name": "X-axis Roll",
+            "channelOffset": 7,
+            "maxLevel": 127
+          },
+          {
+            "name": "Y-axis Roll",
+            "channelOffset": 9,
+            "maxLevel": 127
+          },
+          {
+            "name": "Z-axis Roll",
+            "channelOffset": 11,
+            "maxLevel": 127
+          }
+        ]
+      }
+    ]
+  }
+}

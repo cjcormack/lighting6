@@ -1,0 +1,16 @@
+<h4 class="ui header">Patterns</h4>
+
+<div class="field">
+  <label>Current</label>
+  <div class="ui left labeled">
+    <span class="pattern-icon {{currentPattern}}"></span>
+  </div>
+</div>
+
+<div ng-click="displayPatterns = displayPatterns ? false : true" style="cursor: pointer">
+  <i style="width: 18px; height: 18px; margin-left: 0; margin-right: 0;" class="angle icon" ng-class="{right: !displayPatterns, down: displayPatterns}"></i>
+  Choose
+</div>
+<div ng-show="displayPatterns">
+  <a ng-repeat="pattern in patterns" style="display: inline-block; float: left;" href="" ng-click="$parent.selectPattern(pattern)" title="{{pattern.name}}"><span class="pattern-icon {{pattern.name}}"></span></a>
+</div>
