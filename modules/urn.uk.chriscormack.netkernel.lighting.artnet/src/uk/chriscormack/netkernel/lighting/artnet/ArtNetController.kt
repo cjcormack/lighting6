@@ -9,8 +9,6 @@ import kotlinx.coroutines.selects.select
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.math.max
 
-data class ChannelChange(val newValue: Int, val fadeMs: Long)
-
 @ExperimentalCoroutinesApi
 @ObsoleteCoroutinesApi
 class ArtNetController(val universe: Int, val subnet: Int) {
