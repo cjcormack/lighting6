@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (C) 2014 by Chris Cormack
+  ~ Copyright (C) 2020 by Chris Cormack
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
   ~ of this software and associated documentation files (the "Software"), to deal
@@ -24,10 +24,10 @@
   <endpoint>
     <id>lighting:style:semantic-ui:css</id>
     <grammar>
-      res:/lighting/style/semantic-ui/css/semantic.css
+      res:/lighting/style/semantic-ui/semantic.css
     </grammar>
     <request>
-      <identifier>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/semantic-ui/packaged/css/semantic.css</identifier>
+      <identifier>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/semantic-ui/semantic.css</identifier>
     </request>
     <header name="mime">
       <literal type="string">text/css</literal>
@@ -36,26 +36,26 @@
   <endpoint>
     <id>lighting:style:semantic-ui:js</id>
     <grammar>
-      res:/lighting/style/semantic-ui/js/semantic.js
+      res:/lighting/style/semantic-ui/semantic.js
     </grammar>
     <request>
-      <identifier>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/semantic-ui/packaged/javascript/semantic.js</identifier>
+      <identifier>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/semantic-ui/semantic.js</identifier>
     </request>
     <header name="mime">
-      <literal type="string">text/css</literal>
+      <literal type="string">application/javascript</literal>
     </header>
   </endpoint>
 
   <endpoint>
     <id>lighting:style:semantic-ui:images</id>
     <grammar>
-      res:/lighting/style/semantic-ui/images/
+      res:/lighting/style/semantic-ui/themes/default/assets/images/
       <group name="file-name">
-        <regex type="anything"/>.gif
+        <regex type="anything"/>.png
       </group>
     </grammar>
     <request>
-      <identifier>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/semantic-ui/packaged/images/[[arg:file-name]]</identifier>
+      <identifier>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/semantic-ui/themes/default/assets/images/[[arg:file-name]]</identifier>
     </request>
     <header name="mime">
       <literal type="string">image/gif</literal>
@@ -65,13 +65,13 @@
   <endpoint>
     <id>lighting:style:semantic-ui:fonts:eot</id>
     <grammar>
-      res:/lighting/style/semantic-ui/fonts/
+      res:/lighting/style/semantic-ui/themes/default/assets/fonts/
       <group name="file-name">
         <regex type="anything"/>.eot
       </group>
     </grammar>
     <request>
-      <identifier>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/semantic-ui/packaged/fonts/[[arg:file-name]]</identifier>
+      <identifier>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/semantic-ui/themes/default/assets/fonts/[[arg:file-name]]</identifier>
     </request>
     <header name="mime">
       <literal type="string">application/vnd.ms-fontobject</literal>
@@ -80,13 +80,13 @@
   <endpoint>
     <id>lighting:style:semantic-ui:fonts:svg</id>
     <grammar>
-      res:/lighting/style/semantic-ui/fonts/
+      res:/lighting/style/semantic-ui/themes/default/assets/fonts/
       <group name="file-name">
         <regex type="anything"/>.svg
       </group>
     </grammar>
     <request>
-      <identifier>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/semantic-ui/packaged/fonts/[[arg:file-name]]</identifier>
+      <identifier>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/semantic-ui/themes/default/assets/fonts/[[arg:file-name]]</identifier>
     </request>
     <header name="mime">
       <literal type="string">image/svg+xml</literal>
@@ -95,13 +95,13 @@
   <endpoint>
     <id>lighting:style:semantic-ui:fonts:ttf</id>
     <grammar>
-      res:/lighting/style/semantic-ui/fonts/
+      res:/lighting/style/semantic-ui/themes/default/assets/fonts/
       <group name="file-name">
         <regex type="anything"/>.ttf
       </group>
     </grammar>
     <request>
-      <identifier>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/semantic-ui/packaged/fonts/[[arg:file-name]]</identifier>
+      <identifier>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/semantic-ui/themes/default/assets/fonts/[[arg:file-name]]</identifier>
     </request>
     <header name="mime">
       <literal type="string">application/octet-stream</literal>
@@ -110,16 +110,31 @@
   <endpoint>
     <id>lighting:style:semantic-ui:fonts:woff</id>
     <grammar>
-      res:/lighting/style/semantic-ui/fonts/
+      res:/lighting/style/semantic-ui/themes/default/assets/fonts/
       <group name="file-name">
         <regex type="anything"/>.woff
       </group>
     </grammar>
     <request>
-      <identifier>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/semantic-ui/packaged/fonts/[[arg:file-name]]</identifier>
+      <identifier>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/semantic-ui/themes/default/assets/fonts/[[arg:file-name]]</identifier>
     </request>
     <header name="mime">
       <literal type="string">application/font-woff</literal>
+    </header>
+  </endpoint>
+  <endpoint>
+    <id>lighting:style:semantic-ui:fonts:woff2</id>
+    <grammar>
+      res:/lighting/style/semantic-ui/themes/default/assets/fonts/
+      <group name="file-name">
+        <regex type="anything"/>.woff2
+      </group>
+    </grammar>
+    <request>
+      <identifier>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/semantic-ui/themes/default/assets/fonts/[[arg:file-name]]</identifier>
+    </request>
+    <header name="mime">
+      <literal type="string">font/woff2</literal>
     </header>
   </endpoint>
 

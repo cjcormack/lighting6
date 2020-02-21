@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <module version="2.0">
 	<meta>
 		<identity>
@@ -36,8 +37,25 @@
 			<class>uk.chriscormack.netkernel.lighting.desk.ChannelChangeEndpoint</class>
 		</accessor>
 
+		<accessor>
+			<grammar>
+				<active>
+					<identifier>active:lightingModel</identifier>
+				</active>
+			</grammar>
+			<class>uk.chriscormack.netkernel.lighting.desk.model.ModelAccessor</class>
+		</accessor>
+
 		<import>
 			<uri>urn:uk:chriscormack:netkernel:lighting:artNet</uri>
+			<private/>
+		</import>
+		<import>
+			<uri>urn:uk:chriscormack:netkernel:lighting:desk:script</uri>
+			<private/>
+		</import>
+		<import>
+			<uri>urn:uk:chriscormack:netkernel:lighting:desk:data</uri>
 			<private/>
 		</import>
 
@@ -51,6 +69,134 @@
 		</import>
 		<import>
 			<uri>urn:org:netkernel:lang:kotlin</uri>
+			<private/>
+		</import>
+	</rootspace>
+
+	<rootspace uri="urn:uk:chriscormack:netkernel:lighting:desk:data" name="Lighting / Desk / Database">
+		<literal uri="res:/etc/ConfigRDBMS.xml" type="xml">
+			<config>
+				<rdbms>
+					<jdbcDriver>org.postgresql.Driver</jdbcDriver>
+					<jdbcConnection>jdbc:postgresql://localhost:5432/lighting</jdbcConnection>
+					<poolSize>8</poolSize>
+
+					<user>lighting</user>
+					<password>9}euxr4HYN8)Es|</password>
+				</rdbms>
+			</config>
+		</literal>
+
+		<mapper>
+			<config>
+				<import>res:/uk/chriscormack/netkernel/lighting/desk/data/scripts/mapperConfig.xml</import>
+				<import>res:/uk/chriscormack/netkernel/lighting/desk/data/fixtures/mapperConfig.xml</import>
+			</config>
+			<space>
+				<fileset>
+					<regex>res:/uk/chriscormack/netkernel/lighting/desk/data/(scripts|fixtures)/.*</regex>
+				</fileset>
+			</space>
+		</mapper>
+
+		<import>
+			<uri>urn:org:netkernel:ext:layer1</uri>
+			<private/>
+		</import>
+		<import>
+			<uri>urn:org:netkernel:mod:hds</uri>
+			<private/>
+		</import>
+
+		<import>
+			<uri>urn:org:netkernel:mod:db</uri>
+			<private/>
+		</import>
+	</rootspace>
+
+	<rootspace uri="urn:uk:chriscormack:netkernel:lighting:desk:script" name="Lighting / Desk / Kotlin™ Script">
+		<accessor>
+			<grammar>
+				<active>
+					<identifier>active:lightingKotlinScript</identifier>
+					<argument name="operator"/>
+				</active>
+			</grammar>
+			<class>uk.chriscormack.netkernel.lighting.desk.script.ScriptRunnerAccessor</class>
+		</accessor>
+		<accessor>
+			<grammar>
+				<active>
+					<identifier>active:lightingKotlinScriptTestCompile</identifier>
+					<argument name="operator"/>
+				</active>
+			</grammar>
+			<class>uk.chriscormack.netkernel.lighting.desk.script.TestCompileAccessor</class>
+		</accessor>
+
+		<transreptor>
+			<class>uk.chriscormack.netkernel.lighting.desk.script.LightingScriptTransreptor</class>
+			<description>Lighting Script compiler</description>
+		</transreptor>
+
+		<import>
+			<uri>urn:org:netkernel:lang:kotlin</uri>
+			<private/>
+		</import>
+		<import>
+			<uri>urn:org:netkernel:ext:layer1</uri>
+			<private/>
+		</import>
+	</rootspace>
+
+	<rootspace uri="urn:uk:chriscormack:netkernel:lighting:desk:rest" public="true" name="Lighting / Desk / REST">
+		<literal uri="res:/etc/system/SimpleDynamicImportHook.xml" type="xml">
+			<connection>
+				<type>HTTPFulcrum</type>
+			</connection>
+		</literal>
+
+		<overlay>
+			<prototype>RESTOverlay</prototype>
+			<config>
+				<basepath>/lighting/rest/</basepath>
+			</config>
+			<space>
+				<mapper>
+					<config>res:/uk/chriscormack/netkernel/lighting/desk/rest/mapperConfig.xml</config>
+					<space>
+						<fileset>
+							<regex>res:/uk/chriscormack/netkernel/lighting/desk/rest/mapperConfig.xml</regex>
+						</fileset>
+					</space>
+				</mapper>
+			</space>
+		</overlay>
+
+		<import>
+			<uri>urn:uk:chriscormack:netkernel:lighting:desk:data</uri>
+			<private/>
+		</import>
+		<import>
+			<uri>urn:uk:chriscormack:netkernel:lighting:desk:script</uri>
+			<private/>
+		</import>
+
+		<import>
+			<uri>urn:org:netkernel:mod:hds</uri>
+			<private/>
+		</import>
+		<import>
+			<uri>urn:org:netkernel:json:core</uri>
+			<private/>
+		</import>
+
+		<import>
+			<uri>urn:org:netkernel:tpt:http</uri>
+			<private/>
+		</import>
+		<import>
+			<uri>urn:org:netkernel:ext:layer1</uri>
 			<private/>
 		</import>
 	</rootspace>
@@ -72,7 +218,6 @@
 					</request>
 				</endpoint>
 
-				<import>res:/uk/chriscormack/netkernel/lighting/desk/data/mapperConfig.xml</import>
 				<import>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/css/mapperConfig.xml</import>
 				<import>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/images/mapperConfig.xml</import>
 				<import>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/js/mapperConfig.xml</import>

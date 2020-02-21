@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<endpoint>
+		<id>lighting6:data:fixture:create</id>
+		<grammar>
+			<active>
+				<identifier>res:/lighting/data/fixture</identifier>
+			</active>
+		</grammar>
+		<verbs>NEW</verbs>
+		<request>
+			<identifier>active:java</identifier>
+			<argument name="class">uk.chriscormack.netkernel.lighting.desk.data.fixtures.FixtureAccessor</argument>
+		</request>
+	</endpoint>
+	<endpoint>
+		<id>lighting6:data:fixture</id>
+		<grammar>
+			res:/lighting/data/fixture/
+			<group name="id"><regex type="integer"/></group>
+		</grammar>
+		<verbs>SOURCE,SINK,DELETE</verbs>
+		<request>
+			<identifier>active:java</identifier>
+			<argument name="class">uk.chriscormack.netkernel.lighting.desk.data.fixtures.FixtureAccessor</argument>
+			<argument name="id" method="as-string">arg:id</argument>
+		</request>
+	</endpoint>
+
+	<endpoint>
+		<id>lighting6:data:fixture:byScriptAndKey</id>
+		<grammar>
+			res:/lighting/data/fixture/script_id=
+			<group name="scriptId" encoding="url-query"><regex type="path-segment"/></group>
+			/key=
+			<group name="key" encoding="url-query"><regex type="path-segment"/></group>
+		</grammar>
+		<verbs>EXISTS,SOURCE</verbs>
+		<request>
+			<identifier>active:java</identifier>
+			<argument name="class">uk.chriscormack.netkernel.lighting.desk.data.fixtures.FixtureByScriptAndKeyAccessor</argument>
+			<argument name="scriptId" method="as-string">arg:scriptId</argument>
+			<argument name="key" method="as-string">arg:key</argument>
+		</request>
+	</endpoint>
+
+	<endpoint>
+		<id>lighting6:data:fixture:list</id>
+		<grammar>
+			res:/lighting/data/fixtures
+			<optional>
+				/script_id=
+				<group name="scriptId" encoding="url-query"><regex type="path-segment"/></group>
+			</optional>
+		</grammar>
+		<verbs>SOURCE</verbs>
+		<request>
+			<identifier>active:java</identifier>
+			<argument name="class">uk.chriscormack.netkernel.lighting.desk.data.fixtures.FixtureListAccessor</argument>
+			<argument name="scriptId" method="as-string">arg:scriptId</argument>
+		</request>
+	</endpoint>
+
+	<endpoint>
+		<id>lighting6:data:fixture:markUnloaded</id>
+		<grammar>
+			<active>
+				<identifier>active:lighting-fixtures-markUnloaded</identifier>
+			</active>
+		</grammar>
+		<request>
+			<identifier>active:java</identifier>
+		</request>
+	</endpoint>
+	<endpoint>
+		<id>lighting6:data:fixture:deleteNotLoaded</id>
+		<grammar>
+			<active>
+				<identifier>active:lighting-fixtures-deleteNotLoaded</identifier>
+			</active>
+		</grammar>
+		<request>
+			<identifier>active:java</identifier>
+		</request>
+	</endpoint>
+</config>

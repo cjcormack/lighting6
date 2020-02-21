@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+	<changeSet id="script-storage" author="chris@cormack.me.uk">
+		<createTable tableName="scripts">
+			<column name="id" type="java.sql.Types.INTEGER" autoIncrement="true">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="name" type="java.sql.Types.VARCHAR(255)">
+				<constraints nullable="false" unique="true"/>
+			</column>
+			<column name="script" type="java.sql.Types.CLOB">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet id="fixture-persistence" author="chris@cormack.me.uk">
+		<createTable tableName="fixtures">
+			<column name="id" type="java.sql.Types.INTEGER" autoIncrement="true">
+				<constraints nullable="false"/>
+			</column>
+			<column name="script_id" type="java.sql.Types.INTEGER">
+				<constraints nullable="true"/>
+			</column>
+			<column name="key" type="java.sql.Types.VARCHAR(50)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="fixture_state" type="java.sql.Types.VARBINARY(1024)"/>
+			<column name="loaded" type="java.sql.Types.BOOLEAN" defaultValueBoolean="false">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint baseTableName="fixtures" baseColumnNames="script_id"
+		                         referencedTableName="scripts" referencedColumnNames="id"
+		                         onDelete="CASCADE" onUpdate="RESTRICT"
+		                         constraintName="fixtures_script_id_fk"/>
+
+		<addUniqueConstraint tableName="fixtures" columnNames="script_id,key"/>
+	</changeSet>
+</databaseChangeLog>

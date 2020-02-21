@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<endpoint>
+		<id>lighting6:data:script:create</id>
+		<grammar>
+			<active>
+				<identifier>res:/lighting/data/script</identifier>
+			</active>
+		</grammar>
+		<verbs>NEW</verbs>
+		<request>
+			<identifier>active:java</identifier>
+			<argument name="class">uk.chriscormack.netkernel.lighting.desk.data.scripts.ScriptAccessor</argument>
+		</request>
+	</endpoint>
+	<endpoint>
+		<id>lighting6:data:script</id>
+		<grammar>
+			res:/lighting/data/script/
+			<group name="id"><regex type="integer"/></group>
+		</grammar>
+		<verbs>SOURCE,SINK,DELETE</verbs>
+		<request>
+			<identifier>active:java</identifier>
+			<argument name="class">uk.chriscormack.netkernel.lighting.desk.data.scripts.ScriptAccessor</argument>
+			<argument name="id" method="as-string">arg:id</argument>
+		</request>
+	</endpoint>
+
+	<endpoint>
+		<id>lighting6:data:script:byName</id>
+		<grammar>
+			res:/lighting/data/script/name=
+			<group name="name" encoding="url-query"><regex type="path-segment"/></group>
+		</grammar>
+		<verbs>EXISTS,SOURCE</verbs>
+		<request>
+			<identifier>active:java</identifier>
+			<argument name="class">uk.chriscormack.netkernel.lighting.desk.data.scripts.ScriptByNameAccessor</argument>
+			<argument name="name" method="as-string">arg:name</argument>
+		</request>
+	</endpoint>
+
+	<endpoint>
+		<id>lighting6:data:script:list</id>
+		<grammar>
+			<active>
+				<identifier>res:/lighting/data/scripts</identifier>
+			</active>
+		</grammar>
+		<verbs>SOURCE</verbs>
+		<request>
+			<identifier>active:java</identifier>
+			<argument name="class">uk.chriscormack.netkernel.lighting.desk.data.scripts.ScriptListAccessor</argument>
+			<varargs/>
+		</request>
+	</endpoint>
+</config>

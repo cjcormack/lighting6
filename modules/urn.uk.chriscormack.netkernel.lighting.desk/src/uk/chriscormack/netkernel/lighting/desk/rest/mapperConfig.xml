@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<endpoint>
+		<meta>
+			<rest>
+				<method>GET</method>
+				<simple>script/list</simple>
+				<produces>application/json</produces>
+			</rest>
+		</meta>
+		<grammar>
+			<active>
+				<identifier>acitive:lightingRest:scripts:list</identifier>
+			</active>
+		</grammar>
+		<request>
+			<identifier>active:java</identifier>
+			<argument name="class">uk.chriscormack.netkernel.lighting.desk.rest.script.ListAccessor</argument>
+		</request>
+	</endpoint>
+	<endpoint>
+		<meta>
+			<rest>
+				<method>POST</method>
+				<simple>script/compile</simple>
+				<produces>application/json</produces>
+				<consumes>text/plain</consumes>
+			</rest>
+		</meta>
+		<grammar>
+			<active>
+				<identifier>acitive:lightingRest:scripts:compile</identifier>
+			</active>
+		</grammar>
+		<request>
+			<identifier>active:java</identifier>
+			<argument name="class">uk.chriscormack.netkernel.lighting.desk.rest.script.CompileAccessor</argument>
+		</request>
+	</endpoint>
+	<endpoint>
+		<meta>
+			<rest>
+				<method>POST</method>
+				<simple>script/run</simple>
+				<produces>application/json</produces>
+				<consumes>text/plain</consumes>
+			</rest>
+		</meta>
+		<grammar>
+			<active>
+				<identifier>acitive:lightingRest:scripts:run</identifier>
+			</active>
+		</grammar>
+		<request>
+			<identifier>active:java</identifier>
+			<argument name="class">uk.chriscormack.netkernel.lighting.desk.rest.script.RunAccessor</argument>
+		</request>
+	</endpoint>
+	<endpoint>
+		<meta>
+			<rest>
+				<method>PUT</method>
+				<simple>script/{scriptId:\d+}</simple>
+				<produces>application/json</produces>
+				<consumes>application/json</consumes>
+			</rest>
+		</meta>
+		<grammar>
+			<active>
+				<identifier>acitive:lightingRest:scripts:update</identifier>
+				<argument name="scriptId"/>
+			</active>
+		</grammar>
+		<request>
+			<identifier>active:java</identifier>
+			<argument name="class">uk.chriscormack.netkernel.lighting.desk.rest.script.UpdateAccessor</argument>
+			<argument name="scriptId" method="as-string">arg:scriptId</argument>
+		</request>
+	</endpoint>
+</config>

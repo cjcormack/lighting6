@@ -1,0 +1,105 @@
+<div class="ui-segment">
+	<h2 class="ui header">
+		Scripts
+	</h2>
+
+	<div class="ui celled grid stackable">
+		<!--						<div class="row">-->
+		<div class="four wide column ui divided inbox selection list">
+			<div class="item" ng-class="{active: currentScript && script.id==currentScript.id}" ng-repeat="script in scripts" ng-click="selectScript(script.id)">
+				{{script.name}}
+			</div>
+		</div>
+		<div class="twelve wide right column">
+			<div ng-if="current" class="ui form">
+				<h4 class="ui dividing header">Details</h4>
+				<div class="field">
+					<label>Name</label>
+					<input type="text" ng-model="current.details.name"/>
+				</div>
+
+				<h4 class="ui dividing header">Script</h4>
+				<div id="script-editor" ace-editor="aceOptions" ng-model="current.details.script" ng-style="{height: height}" style="margin-bottom: 1em"></div>
+
+				<button class="ui primary button right floated" ng-class="{disabled: !current.hasChanged}" ng-click="saveChanges()">
+					Save
+				</button>
+				<button class="ui button right floated" ng-class="{disabled: !current.hasChanged}" ng-click="discardChanges()">
+					Discard
+				</button>
+
+				<button class="ui labeled icon button" ng-click="testCompile()">
+					<i class="wrench icon"></i>
+					Compile
+				</button>
+				<button class="ui labeled icon button" ng-click="runScript()">
+					<i class="play icon"></i>
+					Run
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<div style="position: absolute; height: 100vh; width:100vw; pointer-events:none" ng-style="modalHolder">
+		<sm-modal class="modal0" visible="current.compileResultModalVisible" on-approve="approved" on-deny="denied" settings="{ detachable: false }" ng-if="current.compileResult">
+			<div class="header">
+				{{current.compileResult.success ? "Compilation Successful" : "Compilation Failed"}}
+			</div>
+			<div class="image content">
+				<div class="ui image">
+					<i class="check circle outline olive icon" ng-if="current.compileResult.success"></i>
+					<i class="exclamation triangle red icon" ng-if="!current.compileResult.success"></i>
+				</div>
+				<div class="description">
+					<div class="ui relaxed divided list">
+						<div class="item" ng-repeat="message in current.compileResult.error.messages">
+							<i class="large middle aligned icon" ng-class="{exclamation: message.severity.ordinal <= 2, triangle: message.severity.ordinal <= 2, red: message.severity.ordinal == 0, orange: message.severity.ordinal == 1, yellow: message.severity.ordinal == 2, info: message.severity.ordinal == 3, circle: message.severity.ordinal == 3, blue: message.severity.ordinal == 3}"></i>
+							<div class="content">
+								<div class="header">{{message.severity.name}}</div>
+								<div class="description">{{message.message}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="actions">
+				<div class="ui right button">
+					Close
+				</div>
+			</div>
+		</sm-modal>
+	</div>
+
+	<div style="position: absolute; height: 100vh; width:100vw; pointer-events:none" ng-style="modalHolder">
+		<sm-modal class="modal0" visible="current.runResultModalVisible" on-approve="approved" on-deny="denied" settings="{ detachable: false }" ng-if="current.runResult">
+			<div class="header">
+				{{current.runResult.success ? "Run Successful" : "Run Failed"}}
+			</div>
+			<div class="image content">
+				<div class="ui image">
+					<i class="check circle outline olive icon" ng-if="current.runResult.success"></i>
+					<i class="exclamation triangle red icon" ng-if="!current.runResult.success"></i>
+				</div>
+				<div class="description">
+					<div class="ui relaxed divided list" ng-show="current.runResult.error.messages">
+						<div class="item" ng-repeat="message in current.runResult.error.messages">
+							<i class="large middle aligned icon" ng-class="{exclamation: message.severity.ordinal <= 2, triangle: message.severity.ordinal <= 2, red: message.severity.ordinal == 0, orange: message.severity.ordinal == 1, yellow: message.severity.ordinal == 2, info: message.severity.ordinal == 3, circle: message.severity.ordinal == 3, blue: message.severity.ordinal == 3}"></i>
+							<div class="content">
+								<div class="header">{{message.severity.name}}</div>
+								<div class="description">{{message.message}} <span ng-if="message.location">{{message.location}}</span></div>
+							</div>
+						</div>
+					</div>
+					<div ng-show="current.runResult.result">
+						{{current.runResult.result}}
+					</div>
+				</div>
+			</div>
+			<div class="actions">
+				<div class="ui right button">
+					Close
+				</div>
+			</div>
+		</sm-modal>
+	</div>
+</div>

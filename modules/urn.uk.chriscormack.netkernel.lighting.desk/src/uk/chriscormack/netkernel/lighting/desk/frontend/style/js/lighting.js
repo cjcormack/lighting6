@@ -1,4 +1,4 @@
-var lightingApp = angular.module('lightingApp', ['ChannelSliderDirective', 'PatternSelectorDirective', 'ChannelGroupDirective', 'ColourSelectorDirective', 'ModeSelectorDirective', 'ModeToggleDirective', 'LightingWebSocketService', 'ChannelsService', 'FixtureService', 'FixtureDirective', 'SequenceService', 'SequenceDirective', 'SequenceStepDirective', 'TrackService', 'PlaybackDetailsDirective']);
+var lightingApp = angular.module('lightingApp', ['ChannelSliderDirective', 'PatternSelectorDirective', 'ChannelGroupDirective', 'ColourSelectorDirective', 'ModeSelectorDirective', 'ModeToggleDirective', 'LightingWebSocketService', 'ChannelsService', 'FixtureService', 'FixtureDirective', 'SequenceService', 'SequenceDirective', 'SequenceStepDirective', 'TrackService', 'PlaybackDetailsDirective', 'ScriptsDirective', 'ScriptsService', 'AceEditor', 'semantic-ui']);
 
 lightingApp.controller('WebSocketManagerController', function($scope, LightingWebSocketService, ChannelsService, FixtureService, SequenceService) {
   $scope.currentView = 'channels';
