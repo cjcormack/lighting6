@@ -95,14 +95,18 @@ class ScriptAccessor: KotlinAccessor() {
     override fun DeleteRequestContext.onDelete() {
         val id = source<Int>("arg:id")
 
-        source<IHDSDocument>("active:sqlPSUpdate") {
+        val deleteResult = source<IHDSDocument>("active:sqlPSUpdate") {
             argumentByValue("operand", SQL("DELETE FROM scripts WHERE id=?"))
             argumentByValue("param", id)
         }
+
+        val success = deleteResult.reader.firstValue<Int>("/updated-rows", this) >= 1
 
         source<Unit>("active:cutGoldenThread") {
             argument("id", Identifier("gt:/lighting/data/script/list"))
             argument("id", Identifier("gt:/lighting/data/script/$id"))
         }
+
+        response(success)
     }
 }

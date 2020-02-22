@@ -18,6 +18,68 @@
 			<argument name="class">uk.chriscormack.netkernel.lighting.desk.rest.script.ListAccessor</argument>
 		</request>
 	</endpoint>
+
+	<endpoint>
+		<meta>
+			<rest>
+				<method>POST</method>
+				<simple>script</simple>
+				<produces>application/json</produces>
+				<consumes>application/json</consumes>
+			</rest>
+		</meta>
+		<grammar>
+			<active>
+				<identifier>acitive:lightingRest:scripts:create</identifier>
+			</active>
+		</grammar>
+		<request>
+			<identifier>active:java</identifier>
+			<argument name="class">uk.chriscormack.netkernel.lighting.desk.rest.script.CreateAccessor</argument>
+		</request>
+	</endpoint><endpoint>
+		<meta>
+			<rest>
+				<method>PUT</method>
+				<simple>script/{scriptId:\d+}</simple>
+				<produces>application/json</produces>
+				<consumes>application/json</consumes>
+			</rest>
+		</meta>
+		<grammar>
+			<active>
+				<identifier>acitive:lightingRest:scripts:update</identifier>
+				<argument name="scriptId"/>
+			</active>
+		</grammar>
+		<request>
+			<identifier>active:java</identifier>
+			<argument name="class">uk.chriscormack.netkernel.lighting.desk.rest.script.UpdateAccessor</argument>
+			<argument name="scriptId" method="as-string">arg:scriptId</argument>
+		</request>
+	</endpoint>
+	<endpoint>
+		<meta>
+			<rest>
+				<method>DELETE</method>
+				<simple>script/{scriptId:\d+}</simple>
+				<produces>application/json</produces>
+				<consumes>application/json</consumes>
+			</rest>
+		</meta>
+		<grammar>
+			<active>
+				<identifier>acitive:lightingRest:scripts:delete</identifier>
+				<argument name="scriptId"/>
+			</active>
+		</grammar>
+		<request>
+			<identifier>active:java</identifier>
+			<argument name="class">uk.chriscormack.netkernel.lighting.desk.rest.script.DeleteAccessor</argument>
+			<argument name="scriptId" method="as-string">arg:scriptId</argument>
+		</request>
+	</endpoint>
+
 	<endpoint>
 		<meta>
 			<rest>
@@ -54,27 +116,6 @@
 		<request>
 			<identifier>active:java</identifier>
 			<argument name="class">uk.chriscormack.netkernel.lighting.desk.rest.script.RunAccessor</argument>
-		</request>
-	</endpoint>
-	<endpoint>
-		<meta>
-			<rest>
-				<method>PUT</method>
-				<simple>script/{scriptId:\d+}</simple>
-				<produces>application/json</produces>
-				<consumes>application/json</consumes>
-			</rest>
-		</meta>
-		<grammar>
-			<active>
-				<identifier>acitive:lightingRest:scripts:update</identifier>
-				<argument name="scriptId"/>
-			</active>
-		</grammar>
-		<request>
-			<identifier>active:java</identifier>
-			<argument name="class">uk.chriscormack.netkernel.lighting.desk.rest.script.UpdateAccessor</argument>
-			<argument name="scriptId" method="as-string">arg:scriptId</argument>
 		</request>
 	</endpoint>
 </config>

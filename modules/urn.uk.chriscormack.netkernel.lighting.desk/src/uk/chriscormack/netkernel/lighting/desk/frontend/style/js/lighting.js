@@ -55,7 +55,6 @@ lightingApp.controller('WebSocketManagerController', function($scope, LightingWe
   function loadInitialState() {
     ChannelsService.getChannels(true).then(
       function(channels) {
-        console.log(channels);
         $scope.channels = channels;
         $scope.channelsInPages = channelsIntoPages(channels, 8);
 

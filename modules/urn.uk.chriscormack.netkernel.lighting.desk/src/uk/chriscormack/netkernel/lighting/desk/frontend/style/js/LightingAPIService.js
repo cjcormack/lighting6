@@ -96,6 +96,22 @@ module.factory('LightingAPIService', ['$q', '$resource', function ($q, $resource
 		return deferred.promise;
 	};
 
+	Service.createScript = function (details) {
+		var deferred = $q.defer();
+
+		var resReq = $resource('/lighting/rest/script');
+
+		resReq.save({}, {script: details}).$promise.then(
+		function (response) {
+			deferred.resolve(response.script);
+		}, function (error) {
+			deferred.reject(error);
+		}
+		);
+
+		return deferred.promise;
+	};
+
 	Service.updateScript = function (id, details) {
 		var deferred = $q.defer();
 
@@ -106,6 +122,22 @@ module.factory('LightingAPIService', ['$q', '$resource', function ($q, $resource
 		resReq.save({}, {script: details}).$promise.then(
 		function (response) {
 			deferred.resolve(response.script);
+		}, function (error) {
+			deferred.reject(error);
+		}
+		);
+
+		return deferred.promise;
+	};
+
+	Service.deleteScript = function (id) {
+		var deferred = $q.defer();
+
+		var resReq = $resource('/lighting/rest/script/:id', {id: id});
+
+		resReq.delete().$promise.then(
+		function (response) {
+			deferred.resolve(response);
 		}, function (error) {
 			deferred.reject(error);
 		}
@@ -159,7 +191,6 @@ module.factory('LightingAPIService', ['$q', '$resource', function ($q, $resource
 
 		resReq.get().$promise.then(
 		function (response) {
-			console.log(response);
 			deferred.resolve(response);
 		}, function (error) {
 			deferred.reject(error);

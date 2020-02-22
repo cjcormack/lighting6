@@ -15,8 +15,16 @@ module.factory('ScriptsService', ['$q', '$rootScope', 'LightingAPIService', 'Lig
 		return scriptListCachedPromise;
 	};
 
+	Service.createScript = function (details) {
+		return LightingAPIService.createScript(details);
+	};
+
 	Service.updateScript = function (id, details) {
 		return LightingAPIService.updateScript(id, details);
+	};
+
+	Service.deleteScript = function (id) {
+		return LightingAPIService.deleteScript(id);
 	};
 
 	Service.compileScript = function (script) {

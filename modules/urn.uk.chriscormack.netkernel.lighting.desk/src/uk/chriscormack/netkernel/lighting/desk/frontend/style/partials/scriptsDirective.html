@@ -3,12 +3,20 @@
 		Scripts
 	</h2>
 
-	<div class="ui celled grid stackable">
-		<!--						<div class="row">-->
-		<div class="four wide column ui divided inbox selection list">
-			<div class="item" ng-class="{active: currentScript && script.id==currentScript.id}" ng-repeat="script in scripts" ng-click="selectScript(script.id)">
-				{{script.name}}
+	<div class="ui segment celled grid stackable">
+		<div class="ui inverted dimmer" ng-class="{active: loading}">
+			<div class="ui text loader">{{loading}}</div>
+		</div>
+		<div class="four wide column">
+			<div class="ui divided inbox selection list">
+				<div class="item" ng-class="{active: current.details && script.id==current.details.id}" ng-repeat="script in scripts" ng-click="selectScript(script.id)">
+					{{script.name}}
+				</div>
 			</div>
+			<button class="fluid ui basic compact blue icon button" ng-click="newScript()">
+				<i class="plus icon"></i>
+				New Script
+			</button>
 		</div>
 		<div class="twelve wide right column">
 			<div ng-if="current" class="ui form">
@@ -21,11 +29,14 @@
 				<h4 class="ui dividing header">Script</h4>
 				<div id="script-editor" ace-editor="aceOptions" ng-model="current.details.script" ng-style="{height: height}" style="margin-bottom: 1em"></div>
 
-				<button class="ui primary button right floated" ng-class="{disabled: !current.hasChanged}" ng-click="saveChanges()">
-					Save
+				<button class="ui primary button right floated" ng-class="{disabled: !current.hasChanged && !current.isNew}" ng-click="saveChanges()">
+					{{ current.isNew ? "Create" : "Save" }}
 				</button>
 				<button class="ui button right floated" ng-class="{disabled: !current.hasChanged}" ng-click="discardChanges()">
-					Discard
+					Reset
+				</button>
+				<button class="ui negative button right floated" ng-click="deleteScript()" style="margin-right: 20px;">
+					Delete
 				</button>
 
 				<button class="ui labeled icon button" ng-click="testCompile()">
@@ -41,7 +52,7 @@
 	</div>
 
 	<div style="position: absolute; height: 100vh; width:100vw; pointer-events:none" ng-style="modalHolder">
-		<sm-modal class="modal0" visible="current.compileResultModalVisible" on-approve="approved" on-deny="denied" settings="{ detachable: false }" ng-if="current.compileResult">
+		<sm-modal visible="current.compileResultModalVisible" on-approve="approved" on-deny="denied" settings="{ detachable: false }" ng-if="current.compileResult">
 			<div class="header">
 				{{current.compileResult.success ? "Compilation Successful" : "Compilation Failed"}}
 			</div>
@@ -71,7 +82,7 @@
 	</div>
 
 	<div style="position: absolute; height: 100vh; width:100vw; pointer-events:none" ng-style="modalHolder">
-		<sm-modal class="modal0" visible="current.runResultModalVisible" on-approve="approved" on-deny="denied" settings="{ detachable: false }" ng-if="current.runResult">
+		<sm-modal visible="current.runResultModalVisible" on-approve="approved" on-deny="denied" settings="{ detachable: false }" ng-if="current.runResult">
 			<div class="header">
 				{{current.runResult.success ? "Run Successful" : "Run Failed"}}
 			</div>
@@ -102,4 +113,24 @@
 			</div>
 		</sm-modal>
 	</div>
+
+	<sm-modal class="mini" visible="current.discardChangesVisible" ng-if="current">
+		<div class="ui header">
+			Outstanding Changes
+		</div>
+		<div class="content">
+			<p>Current script has changes that have not been saved. Please save or revert.</p>
+		</div>
+		<div class="actions">
+			<div class="ui ok button">
+				Close
+			</div>
+		</div>
+		</div>
+		<div class="actions">
+			<div class="ui right button">
+				Close
+			</div>
+		</div>
+	</sm-modal>
 </div>

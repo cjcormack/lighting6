@@ -8,14 +8,49 @@ module.directive('scriptsDirective', function (ScriptsService, $window) {
 		link: function ($scope, el, attrs) {
 			$scope.current = null;
 
+			var handleUnsavedChanges = function() {
+				if (!$scope.current || !($scope.current.hasChanged || $scope.current.isNew)) {
+					return true;
+				}
+
+				$scope.current.discardChangesVisible = true;
+
+				return false;
+			};
+
 			$scope.selectScript = function (scriptId) {
 				if ($scope.current && $scope.current.details.id === scriptId) {
 					return;
 				}
+
+				if (!handleUnsavedChanges()) {
+					return;
+				}
+
+				var details = $scope.scripts[scriptId];
+
 				$scope.current = {
 					hasChanged: false,
-					details: $scope.scripts[scriptId],
-					originalDetails: angular.copy($scope.scripts[scriptId])
+					details: details,
+					originalDetails: angular.copy(details),
+					isNew: false
+				};
+			};
+			$scope.newScript = function() {
+				if (!handleUnsavedChanges()) {
+					return;
+				}
+
+				var newScript = {
+					name: "New Script",
+					script: ""
+				};
+				$scope.scripts["new"] = newScript;
+				$scope.current = {
+					hasChanged: true,
+					details: newScript,
+					originalDetails: angular.copy(newScript),
+					isNew: true
 				};
 			};
 
@@ -41,27 +76,74 @@ module.directive('scriptsDirective', function (ScriptsService, $window) {
 				if (!$scope.current || !$scope.current.hasChanged) {
 					return;
 				}
-				console.log("discardChanges");
 				$scope.current.details = angular.copy($scope.current.originalDetails);
 				$scope.scripts[$scope.current.details.id] = $scope.current.details;
 			};
 			$scope.saveChanges = function() {
-				if (!$scope.current || !$scope.current.hasChanged) {
+				if (!$scope.current || (!$scope.current.hasChanged && !$scope.current.isNew)) {
 					return;
 				}
-				console.log("saveChanges");
 
-				var scriptId = $scope.current.details.id;
+				if ($scope.current.isNew) {
+					$scope.loading = "Creating";
+					ScriptsService.createScript($scope.current.details).then(function(response) {
+						var scriptId = response.id;
+						updateScriptList().then(function() {
+							$scope.loading = false;
+							$scope.current = {
+								hasChanged: false,
+								details: $scope.scripts[scriptId],
+								originalDetails: angular.copy($scope.scripts[scriptId])
+							};
+						}, function(error) {
+							$scope.loading = false;
+						})
+					}, function(error) {
+						$scope.loading = false;
+					});
+				} else if ($scope.current.hasChanged) {
+					var scriptId = $scope.current.details.id;
 
-				ScriptsService.updateScript(scriptId, $scope.current.details).then(function() {
-					updateScriptList().then(function() {
-						$scope.current = {
-							hasChanged: false,
-							details: $scope.scripts[scriptId],
-							originalDetails: angular.copy($scope.scripts[scriptId])
-						};
-					})
-				});
+					$scope.loading = "Saving";
+					ScriptsService.updateScript(scriptId, $scope.current.details).then(function() {
+						updateScriptList().then(function() {
+							$scope.loading = false;
+							$scope.current = {
+								hasChanged: false,
+								details: $scope.scripts[scriptId],
+								originalDetails: angular.copy($scope.scripts[scriptId])
+							};
+						}, function(error) {
+							$scope.loading = false;
+						});
+					}, function(error) {
+						$scope.loading = false;
+					});
+				}
+
+			};
+			$scope.deleteScript = function() {
+				if (!$scope.current) {
+					return;
+				}
+
+				if ($scope.current.isNew) {
+					delete $scope.scripts["new"];
+					$scope.current = null;
+				} else {
+					$scope.loading = "Deleting";
+
+					var scriptId = $scope.current.details.id;
+
+					ScriptsService.deleteScript(scriptId).then(function(response) {
+						$scope.loading = false;
+						updateScriptList().then(function() {
+							$scope.current = null;
+						});
+					}, function(error) {
+						$scope.loading = false;
+					});
+				}
 			};
 
 			$scope.testCompile = function() {
@@ -69,13 +151,16 @@ module.directive('scriptsDirective', function (ScriptsService, $window) {
 					return;
 				}
 
+				$scope.loading = "Compiling";
+
 				ScriptsService.compileScript($scope.current.details.script).then(function(result) {
+					$scope.loading = false;
 					updatePositions();
 
 					$scope.current.compileResult = result;
 					$scope.current.compileResultModalVisible = true;
-
-					console.log(result);
+				}, function(error) {
+					$scope.loading = false;
 				});
 			};
 			$scope.runScript = function() {
@@ -83,12 +168,17 @@ module.directive('scriptsDirective', function (ScriptsService, $window) {
 					return;
 				}
 
+				$scope.loading = "Running";
+
 				ScriptsService.runScript($scope.current.details.script).then(function(result) {
+					$scope.loading = false;
+
 					updatePositions();
 
 					$scope.current.runResult = result;
 					$scope.current.runResultModalVisible = true;
-					console.log(result);
+				}, function(error) {
+					$scope.loading = false;
 				});
 			};
 
@@ -114,8 +204,6 @@ module.directive('scriptsDirective', function (ScriptsService, $window) {
 					left: -elPosition.left + "px",
 					top: -elPosition.top + "px"
 				};
-
-				console.log();
 			};
 
 			updatePositions();
@@ -127,14 +215,22 @@ module.directive('scriptsDirective', function (ScriptsService, $window) {
 			});
 
 			var updateScriptList = function() {
+				$scope.loading = "Loading";
 				return ScriptsService.getScriptList(true).then(
 					function (scripts) {
+						$scope.loading = false;
 						var scriptMap = {};
 						scripts.forEach(function(script) {
 							scriptMap[script.id] = script;
 						});
 						$scope.scripts = scriptMap;
+
+						var keys = Object.keys(scriptMap);
+						if (keys.length >= 1) {
+							$scope.selectScript(keys[0]);
+						}
 					}, function (error) {
+						$scope.loading = false;
 						console.error('Could not load scripts', error);
 					}
 				);
