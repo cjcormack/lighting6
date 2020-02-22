@@ -127,18 +127,29 @@ module.directive('scriptsDirective', function (ScriptsService, $window) {
 					return;
 				}
 
+				if ($scope.current.isNew && !$scope.current.hasChanged) {
+					delete $scope.scripts["new"];
+					$scope.current = null;
+				} else {
+					$scope.current.deleteApprovalVisible = true;
+				}
+
+			};
+			$scope.doDeleteScript = function() {
+				if (!$scope.current) {
+					return;
+				}
+
 				if ($scope.current.isNew) {
 					delete $scope.scripts["new"];
 					$scope.current = null;
 				} else {
-					$scope.loading = "Deleting";
-
 					var scriptId = $scope.current.details.id;
 
+					$scope.loading = "Deleting";
 					ScriptsService.deleteScript(scriptId).then(function(response) {
-						$scope.loading = false;
 						updateScriptList().then(function() {
-							$scope.current = null;
+							$scope.loading = false;
 						});
 					}, function(error) {
 						$scope.loading = false;
