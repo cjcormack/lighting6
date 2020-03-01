@@ -34,7 +34,13 @@ object LightingScriptConfiguration : ScriptCompilationConfiguration({
 })
 
 @KotlinScript(fileExtension = "light.kts", displayName = "Lighting Kotlin Script", compilationConfiguration = LightingScriptConfiguration::class)
-abstract class LightKotlinScript(context: SourceRequestContext): RequestContextWithResponse<Any>(context.nkfContext)
+abstract class LightKotlinScript(context: SourceRequestContext): RequestContextWithResponse<Any>(context.nkfContext) {
+    fun runScript(scriptName: String) {
+        source<Unit>("active:lightingKotlinScript") {
+            argumentByValue("scriptName", scriptName)
+        }
+    }
+}
 
 class LightingScriptRepresentation(script: CompiledScript<*>): BaseScriptRepresentation(script)
 

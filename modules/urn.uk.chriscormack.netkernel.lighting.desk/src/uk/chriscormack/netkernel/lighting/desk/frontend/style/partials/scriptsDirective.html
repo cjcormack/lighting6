@@ -9,7 +9,7 @@
 		</div>
 		<div class="four wide column">
 			<div class="ui divided inbox selection list">
-				<div class="item" ng-class="{active: current.details && script.id==current.details.id}" ng-repeat="script in scripts" ng-click="selectScript(script.id)">
+				<div class="item" ng-class="{active: current.details && script.id==current.details.id}" ng-repeat="script in scripts | orderBy:aid" ng-click="selectScript(script.id)">
 					{{script.name}}
 				</div>
 			</div>
@@ -29,7 +29,7 @@
 				<h4 class="ui dividing header">Script</h4>
 				<div id="script-editor" ace-editor="aceOptions" ng-model="current.details.script" ng-style="{height: height}" style="margin-bottom: 1em"></div>
 
-				<button class="ui primary button right floated" ng-class="{disabled: !current.hasChanged && !current.isNew}" ng-click="saveChanges()">
+				<button class="ui primary button right floated" ng-class="{disabled: !current.isValid || (!current.hasChanged && !current.isNew)}" ng-click="saveChanges()">
 					{{ current.isNew ? "Create" : "Save" }}
 				</button>
 				<button class="ui button right floated" ng-class="{disabled: !current.hasChanged}" ng-click="discardChanges()">
@@ -58,7 +58,7 @@
 			</div>
 			<div class="image content">
 				<div class="ui image">
-					<i class="check circle outline olive icon" ng-if="current.compileResult.success"></i>
+					<i class="check circle outline green icon" ng-if="current.compileResult.success"></i>
 					<i class="exclamation triangle red icon" ng-if="!current.compileResult.success"></i>
 				</div>
 				<div class="description">
@@ -83,16 +83,25 @@
 
 	<div style="position: absolute; height: 100vh; width:100vw; pointer-events:none" ng-style="modalHolder">
 		<sm-modal visible="current.runResultModalVisible" settings="{ detachable: false }" ng-if="current.runResult">
-			<div class="header">
-				{{current.runResult.success ? "Run Successful" : "Run Failed"}}
+			<div class="header" ng-if="current.runResult.status == 'success'">
+				Run Successful
 			</div>
-			<div class="image content">
+			<div class="header" ng-if="current.runResult.status == 'compileError'">
+				Run Failed (Compilation Error)
+			</div>
+			<div class="header" ng-if="current.runResult.status == 'exception'">
+				Run Failed (Exception)
+			</div>
+			<div class="scrolling image content" style="pointer-events: auto">
 				<div class="ui image">
-					<i class="check circle outline olive icon" ng-if="current.runResult.success"></i>
-					<i class="exclamation triangle red icon" ng-if="!current.runResult.success"></i>
+					<i class="check circle outline green icon" ng-if="current.runResult.status == 'success'"></i>
+					<i class="exclamation triangle red icon" ng-if="current.runResult.status != 'success'"></i>
 				</div>
 				<div class="description">
-					<div class="ui relaxed divided list" ng-show="current.runResult.error.messages">
+					<div ng-if="current.runResult.status == 'success'">
+						{{current.runResult.result}}
+					</div>
+					<div ng-if="current.runResult.status == 'compileError'" class="ui relaxed divided list">
 						<div class="item" ng-repeat="message in current.runResult.error.messages">
 							<i class="large middle aligned icon" ng-class="{exclamation: message.severity.ordinal <= 2, triangle: message.severity.ordinal <= 2, red: message.severity.ordinal == 0, orange: message.severity.ordinal == 1, yellow: message.severity.ordinal == 2, info: message.severity.ordinal == 3, circle: message.severity.ordinal == 3, blue: message.severity.ordinal == 3}"></i>
 							<div class="content">
@@ -101,8 +110,13 @@
 							</div>
 						</div>
 					</div>
-					<div ng-show="current.runResult.result">
-						{{current.runResult.result}}
+					<div ng-if="current.runResult.status == 'exception'">
+						<div class="ui medium header">
+							{{ current.runResult.error.message }}
+						</div>
+						<ul class="ui list">
+							<li ng-repeat="traceItem in current.runResult.error.stackTrace track by $index">{{ traceItem }}</li>
+						</ul>
 					</div>
 				</div>
 			</div>

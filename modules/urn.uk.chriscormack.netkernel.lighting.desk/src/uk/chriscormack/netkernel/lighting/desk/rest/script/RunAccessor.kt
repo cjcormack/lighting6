@@ -2,7 +2,7 @@ package uk.chriscormack.netkernel.lighting.desk.rest.script
 
 import org.netkernel.lang.kotlin.dsl.hds.hds
 import org.netkernel.lang.kotlin.knkf.context.SourceRequestContext
-import org.netkernel.lang.kotlin.script.NetKernelKotlinScriptException
+import org.netkernel.lang.kotlin.script.NetKernelKotlinScriptCompileException
 
 class RunAccessor: ScriptTestAccessor() {
     override fun SourceRequestContext.onSource() {
@@ -16,11 +16,7 @@ class RunAccessor: ScriptTestAccessor() {
         } catch (e: Exception) {
             val scriptException = generateSequence(e as Throwable) { it.cause }.last()
 
-            if (scriptException !is NetKernelKotlinScriptException) {
-                throw e
-            }
-
-            Pair(null, scriptException as NetKernelKotlinScriptException)
+            Pair(null, scriptException)
         }
 
         val resp = response {
@@ -28,12 +24,20 @@ class RunAccessor: ScriptTestAccessor() {
                 argumentByValue("operand") {
                     hds {
                         node("runResult") {
-                            node("success", error == null)
                             if (error == null) {
+                                node("status", "success")
                                 node("result", scriptResult)
                             } else {
-                                node("error") {
-                                    builder.appendChildren(error.reportAsDoc().reader)
+                                if (error is NetKernelKotlinScriptCompileException) {
+                                    node("status", "compileError")
+                                    node("error") {
+                                        builder.appendChildren(error.reportAsDoc().reader)
+                                    }
+                                } else {
+                                    node("status", "exception")
+                                    node("error") {
+                                        builder.appendChildren(error.asDoc().reader)
+                                    }
                                 }
                             }
                         }

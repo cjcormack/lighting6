@@ -12,7 +12,7 @@ import org.netkernel.mod.hds.IHDSDocument
 class ScriptListAccessor: KotlinAccessor() {
     override fun SourceRequestContext.onSource() {
         val resultNode = source<IHDSDocument>("active:sqlPSQuery") {
-            argumentByValue("operand", SQL("SELECT id FROM scripts ORDER BY id DESC"))
+            argumentByValue("operand", SQL("SELECT id FROM scripts ORDER BY id"))
         }
 
         source<Unit>("active:attachGoldenThread") {

@@ -119,7 +119,8 @@
 			<grammar>
 				<active>
 					<identifier>active:lightingKotlinScript</identifier>
-					<argument name="operator"/>
+					<argument name="operator" min="0" max="1"/>
+					<argument name="scriptName" min="0" max="1"/>
 				</active>
 			</grammar>
 			<class>uk.chriscormack.netkernel.lighting.desk.script.ScriptRunnerAccessor</class>
@@ -138,6 +139,11 @@
 			<class>uk.chriscormack.netkernel.lighting.desk.script.LightingScriptTransreptor</class>
 			<description>Lighting Script compiler</description>
 		</transreptor>
+
+		<import>
+			<uri>urn:uk:chriscormack:netkernel:lighting:desk:data</uri>
+			<private/>
+		</import>
 
 		<import>
 			<uri>urn:org:netkernel:lang:kotlin</uri>

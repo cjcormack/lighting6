@@ -2,13 +2,13 @@ package uk.chriscormack.netkernel.lighting.desk.rest.script
 
 import org.netkernel.lang.kotlin.dsl.hds.hds
 import org.netkernel.lang.kotlin.knkf.context.SourceRequestContext
-import org.netkernel.lang.kotlin.script.NetKernelKotlinScriptException
+import org.netkernel.lang.kotlin.script.NetKernelKotlinScriptCompileException
 
 class CompileAccessor: ScriptTestAccessor() {
     override fun SourceRequestContext.onSource() {
         val scriptToCompile = source<String>("httpRequest:/body")
 
-        val error: NetKernelKotlinScriptException? = try {
+        val error: NetKernelKotlinScriptCompileException? = try {
             source<Unit>("active:lightingKotlinScriptTestCompile") {
                 argumentByValue("operator", scriptToCompile)
             }
@@ -16,7 +16,7 @@ class CompileAccessor: ScriptTestAccessor() {
         } catch (e: Exception) {
             val scriptException = generateSequence(e as Throwable) { it.cause }.last()
 
-            if (scriptException !is NetKernelKotlinScriptException) {
+            if (scriptException !is NetKernelKotlinScriptCompileException) {
                 throw e
             }
 
