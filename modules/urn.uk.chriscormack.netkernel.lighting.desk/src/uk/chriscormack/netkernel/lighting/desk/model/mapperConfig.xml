@@ -1,0 +1,17 @@
+<config>
+	<endpoint>
+		<grammar>
+			<active>
+				<identifier>active:lighting-setChannel</identifier>
+				<argument name="channelNo"/>
+				<argument name="fadeMs" min="0" max="1"/>
+			</active>
+		</grammar>
+		<verbs>SINK,SOURCE</verbs>
+		<request>
+			<identifier>active:java</identifier>
+			<argument name="class">uk.chriscormack.netkernel.lighting.desk.model.ChannelAccessor</argument>
+			<varargs/>
+		</request>
+	</endpoint>
+</config>

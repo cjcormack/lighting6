@@ -40,6 +40,14 @@ abstract class LightKotlinScript(context: SourceRequestContext): RequestContextW
             argumentByValue("scriptName", scriptName)
         }
     }
+
+    fun setChannel(channelNo: Int, channelLevel: Int, fadeMs: Long = 0) {
+        sink<Int>("active:lighting-setChannel") {
+            primaryArgument(channelLevel)
+            argumentByValue("channelNo", channelNo)
+            argumentByValue("fadeMs", fadeMs)
+        }
+    }
 }
 
 class LightingScriptRepresentation(script: CompiledScript<*>): BaseScriptRepresentation(script)

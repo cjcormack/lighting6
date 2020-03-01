@@ -9,7 +9,7 @@ import org.netkernel.lang.kotlin.knkf.context.NewRequestContext
 import org.netkernel.lang.kotlin.knkf.context.SinkRequestContext
 import org.netkernel.lang.kotlin.knkf.context.sourcePrimary
 import org.netkernel.lang.kotlin.knkf.endpoints.KotlinAccessor
-import uk.chriscormack.netkernel.lighting.desk.ChannelChangeEndpoint
+import uk.chriscormack.netkernel.lighting.desk.model.ChannelStateEndpoint
 import java.io.IOException
 import java.util.*
 
@@ -87,14 +87,14 @@ class LightingSocketAccessor : KotlinAccessor() {
                 val channelId: Int = channel.getInt("id")
                 val channelLevel: Int = channel.getInt("level")
 
-                sink<Int>("active:artnet-channel") {
+                sink<Int>("active:lighting-setChannel") {
                     primaryArgument(channelLevel)
                     argumentByValue("channelNo", channelId)
                 }
             }
             "channelState" -> {
                 val channelArray = ArrayList<JSONObject>()
-                ChannelChangeEndpoint.readCurrentValues {
+                ChannelStateEndpoint.readCurrentValues {
                     it.forEach { (no, value) ->
                         val channelDetails = JSONObject()
                         channelDetails.put("id", no)

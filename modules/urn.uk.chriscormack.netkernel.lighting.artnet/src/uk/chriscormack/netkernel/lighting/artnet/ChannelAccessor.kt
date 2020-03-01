@@ -23,6 +23,12 @@ class ChannelAccessor: BaseArtNetAccessor() {
         val channelNo = source<Int>("arg:channelNo")
         val channelValue = sourcePrimary<Int>()
 
-        controller.setValue(channelNo, channelValue)
+        val fadeMs = if (exists("arg:fadeMs")) {
+            source<Long>("arg:fadeMs")
+        } else {
+            0
+        }
+
+        controller.setValue(channelNo, channelValue, fadeMs)
     }
 }

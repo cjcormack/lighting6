@@ -1,4 +1,4 @@
-package uk.chriscormack.netkernel.lighting.desk
+package uk.chriscormack.netkernel.lighting.desk.model
 
 import org.netkernel.lang.kotlin.dsl.declarativeRequest.declarativeRequest
 import org.netkernel.lang.kotlin.knkf.context.RequestContext
@@ -11,7 +11,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.concurrent.read
 import kotlin.concurrent.write
 
-class ChannelChangeEndpoint: KotlinAccessor() {
+class ChannelStateEndpoint: KotlinAccessor() {
     companion object {
         private val valuesLock = ReentrantReadWriteLock()
         private val lightingValues = HashMap<Int, Int>()
@@ -64,6 +64,7 @@ class ChannelChangeEndpoint: KotlinAccessor() {
                 val value = it.firstValue<Int>("value", this)
 
                 lightingValues[no] = value
+                // TODO replace with a proper listener interface
                 LightingSocketAccessor.channelUpdated(no, value)
             }
         }
