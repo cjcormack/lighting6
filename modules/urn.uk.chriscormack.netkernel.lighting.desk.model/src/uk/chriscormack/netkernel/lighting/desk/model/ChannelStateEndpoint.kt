@@ -6,21 +6,18 @@ import org.netkernel.lang.kotlin.knkf.context.SourceRequestContext
 import org.netkernel.lang.kotlin.knkf.endpoints.KotlinAccessor
 import org.netkernel.lang.kotlin.util.firstValue
 import org.netkernel.mod.hds.IHDSDocument
-import uk.chriscormack.netkernel.lighting.desk.frontend.LightingSocketAccessor
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.concurrent.read
 import kotlin.concurrent.write
 
 class ChannelStateEndpoint: KotlinAccessor() {
-    companion object {
-        private val valuesLock = ReentrantReadWriteLock()
-        private val lightingValues = HashMap<Int, Int>()
+    private val valuesLock = ReentrantReadWriteLock()
+    private val lightingValues = HashMap<Int, Int>()
 
-        fun readCurrentValues(action: (Map<Int, Int>) -> Unit) {
-            valuesLock.read {
-                action(lightingValues)
-            }
-        }
+    private val listeners = ArrayList<(no: Int, value: Int) -> Unit>()
+
+    companion object {
+        lateinit var INSTANCE: ChannelStateEndpoint
     }
 
     init {
@@ -28,6 +25,8 @@ class ChannelStateEndpoint: KotlinAccessor() {
     }
 
     override fun RequestContext.postCommission() {
+        INSTANCE = this@ChannelStateEndpoint
+
         source<Unit>("active:artnet-addChannelChangeListener") {
             argumentByValue("request") {
                 declarativeRequest("active:channelsChanged")
@@ -55,6 +54,20 @@ class ChannelStateEndpoint: KotlinAccessor() {
         }
     }
 
+    fun registerChannelUpdatedListener(callback: (no: Int, value: Int) -> Unit) {
+        listeners.add(callback)
+    }
+
+    fun unregisterChannelUpdatedListener(callback: (no: Int, value: Int) -> Unit) {
+        listeners.remove(callback)
+    }
+
+    fun readCurrentValues(action: (Map<Int, Int>) -> Unit) {
+        valuesLock.read {
+            action(lightingValues)
+        }
+    }
+
     override fun SourceRequestContext.onSource() {
         val changedChannelNodes = source<IHDSDocument>("arg:operand")
 
@@ -64,8 +77,10 @@ class ChannelStateEndpoint: KotlinAccessor() {
                 val value = it.firstValue<Int>("value", this)
 
                 lightingValues[no] = value
-                // TODO replace with a proper listener interface
-                LightingSocketAccessor.channelUpdated(no, value)
+
+                listeners.forEach {
+                    it(no, value)
+                }
             }
         }
     }

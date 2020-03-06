@@ -4,10 +4,7 @@ import org.eclipse.jetty.websocket.api.Session
 import org.json.JSONObject
 import org.netkernel.lang.kotlin.knkf.Identifier
 import org.netkernel.lang.kotlin.knkf.LogLevel
-import org.netkernel.lang.kotlin.knkf.context.DeleteRequestContext
-import org.netkernel.lang.kotlin.knkf.context.NewRequestContext
-import org.netkernel.lang.kotlin.knkf.context.SinkRequestContext
-import org.netkernel.lang.kotlin.knkf.context.sourcePrimary
+import org.netkernel.lang.kotlin.knkf.context.*
 import org.netkernel.lang.kotlin.knkf.endpoints.KotlinAccessor
 import uk.chriscormack.netkernel.lighting.desk.model.ChannelStateEndpoint
 import uk.chriscormack.netkernel.lighting.desk.model.TrackStateEndpoint
@@ -15,43 +12,59 @@ import java.io.IOException
 import java.util.*
 
 class LightingSocketAccessor : KotlinAccessor() {
-    companion object {
-        private val connections = HashMap<String, Session>()
+    private val connections = HashMap<String, Session>()
 
-        fun channelUpdated(id: Int, level: Int) {
-            val channel = JSONObject()
-            channel.put("i", id)
-            channel.put("l", level)
-            val data = JSONObject()
-            data.put("c", channel)
-            sendMessage("uC", data)
+    override fun RequestContext.postCommission() {
+        connections.clear()
+
+        ChannelStateEndpoint.INSTANCE.registerChannelUpdatedListener(this@LightingSocketAccessor::channelUpdated)
+        TrackStateEndpoint.INSTANCE.registerTrackUpdatedListener(this@LightingSocketAccessor::trackStateChanged)
+    }
+
+    override fun RequestContext.preDecommission() {
+        connections.forEach{ (_, session) ->
+            try {
+                session.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
+        connections.clear()
+    }
 
-        fun trackStateChanged(isPlaying: Boolean, artist: String, track: String) {
-            val data = JSONObject()
-            data.put("isPlaying", isPlaying)
-            data.put("artist", artist)
-            data.put("name", track)
-            sendMessage("uT", data)
-        }
+    fun channelUpdated(id: Int, level: Int) {
+        val channel = JSONObject()
+        channel.put("i", id)
+        channel.put("l", level)
+        val data = JSONObject()
+        data.put("c", channel)
+        sendMessage("uC", data)
+    }
 
-        private fun sendMessage(type: String, data: JSONObject?) {
-            connections.forEach { (_, connection) ->
-                if (!connection.isOpen) {
-                    return
-                }
-                val message = JSONObject()
-                message.put("type", type)
-                if (data != null) {
-                    message.put("data", data)
-                }
+    fun trackStateChanged(isPlaying: Boolean, artist: String, track: String) {
+        val data = JSONObject()
+        data.put("isPlaying", isPlaying)
+        data.put("artist", artist)
+        data.put("name", track)
+        sendMessage("uT", data)
+    }
+
+    private fun sendMessage(type: String, data: JSONObject?) {
+        connections.forEach { (_, connection) ->
+            if (!connection.isOpen) {
+                return
+            }
+            val message = JSONObject()
+            message.put("type", type)
+            if (data != null) {
+                message.put("data", data)
+            }
+            try {
+                connection.remote.sendString(message.toString())
+            } catch (e: IOException) {
                 try {
-                    connection.remote.sendString(message.toString())
-                } catch (e: IOException) {
-                    try {
-                        connection.close()
-                    } catch (ignored: Exception) {
-                    }
+                    connection.close()
+                } catch (ignored: Exception) {
                 }
             }
         }
@@ -104,7 +117,7 @@ class LightingSocketAccessor : KotlinAccessor() {
             }
             "channelState" -> {
                 val channelArray = ArrayList<JSONObject>()
-                ChannelStateEndpoint.readCurrentValues {
+                ChannelStateEndpoint.INSTANCE.readCurrentValues {
                     it.forEach { (no, value) ->
                         val channelDetails = JSONObject()
                         channelDetails.put("id", no)
@@ -126,7 +139,7 @@ class LightingSocketAccessor : KotlinAccessor() {
             "trackDetails" -> {
                 val data = JSONObject()
 
-                TrackStateEndpoint.readCurrentValue { playerState, artist, track ->
+                TrackStateEndpoint.INSTANCE.readCurrentValue { playerState, artist, track ->
                     data.put("isPlaying", playerState)
                     data.put("artist", artist)
                     data.put("name", track)

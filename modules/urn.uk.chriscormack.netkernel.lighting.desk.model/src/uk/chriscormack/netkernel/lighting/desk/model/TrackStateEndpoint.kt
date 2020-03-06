@@ -6,28 +6,26 @@ import org.netkernel.lang.kotlin.knkf.context.SourceRequestContext
 import org.netkernel.lang.kotlin.knkf.endpoints.KotlinAccessor
 import org.netkernel.lang.kotlin.util.firstValue
 import org.netkernel.mod.hds.IHDSDocument
-import uk.chriscormack.netkernel.lighting.desk.frontend.LightingSocketAccessor
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.concurrent.read
 import kotlin.concurrent.write
 
 class TrackStateEndpoint: KotlinAccessor() {
-    companion object {
-        private val valueLock = ReentrantReadWriteLock()
-        private var currentTrack: Triple<Boolean, String, String>? = null
+    private val valueLock = ReentrantReadWriteLock()
+    private var currentTrack: Triple<Boolean, String, String>? = null
 
-        fun readCurrentValue(action: (playerState: Boolean, artist: String, track: String) -> Unit) {
-            valueLock.read {
-                action(currentTrack?.first ?: false, currentTrack?.second ?: "", currentTrack?.third ?: "")
-            }
-        }
+    companion object {
+        lateinit var INSTANCE: TrackStateEndpoint
     }
+
+    private val listeners = ArrayList<(isPlaying: Boolean, artist: String, track: String) -> Unit>()
 
     init {
         declareThreadSafe(false)
     }
 
     override fun RequestContext.postCommission() {
+        INSTANCE = this@TrackStateEndpoint
         source<Unit>("active:trackServer-addTrackChangeListener") {
             argumentByValue("request") {
                 declarativeRequest("active:trackChanged")
@@ -40,6 +38,20 @@ class TrackStateEndpoint: KotlinAccessor() {
             argumentByValue("request") {
                 declarativeRequest("active:trackChanged")
             }
+        }
+    }
+
+    fun registerTrackUpdatedListener(callback: (isPlaying: Boolean, artist: String, track: String) -> Unit) {
+        listeners.add(callback)
+    }
+
+    fun unregisterTrackUpdatedListener(callback: (isPlaying: Boolean, artist: String, track: String) -> Unit) {
+        listeners.remove(callback)
+    }
+
+    fun readCurrentValue(action: (playerState: Boolean, artist: String, track: String) -> Unit) {
+        valueLock.read {
+            action(currentTrack?.first ?: false, currentTrack?.second ?: "", currentTrack?.third ?: "")
         }
     }
 
@@ -59,7 +71,9 @@ class TrackStateEndpoint: KotlinAccessor() {
                 argumentByValue("scriptName", "track-changed")
             }
 
-            LightingSocketAccessor.trackStateChanged(playerState, artist, track)
+            listeners.forEach {
+                it(playerState, artist, track)
+            }
         }
     }
 }

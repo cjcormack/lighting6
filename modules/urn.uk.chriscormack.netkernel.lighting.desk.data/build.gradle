@@ -11,11 +11,9 @@ buildscript {
 
 //Additional Compile Dependencies
 dependencies {
-	compileOnly project(':modules:urn.uk.chriscormack.netkernel.lighting.desk.model')
-
 	compile group:'urn.org.netkernel', name: 'mod.hds', version: '[0.5.0,)'
-	compile group:'urn.org.netkernel', name: 'tpt.http', version: '[3.16.1,)'
-	compile group:'urn.org.netkernel', name: 'json.core', version: '[1.16.3,)'
+
+	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.9'
 }
 
 compileKotlin {

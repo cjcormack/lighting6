@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 
 		<!-- Site Properities -->
-		<title>Chris's DMX Controller v2.0</title>
+		<title>Chris' DMX Controller v6.0</title>
 
 		<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Open+Sans:300italic,400,300,700"
 		      rel="stylesheet" type="text/css"/>
@@ -52,7 +52,7 @@
 				<div class="ui grid">
 					<div class="twelve wide column">
 						<h1 class="center aligned ui header">
-							Chris's DMX Controller
+							Chris' DMX Controller v6
 						</h1>
 						<div class="ui horizontal divider">
 							<i class="bolt icon"></i>

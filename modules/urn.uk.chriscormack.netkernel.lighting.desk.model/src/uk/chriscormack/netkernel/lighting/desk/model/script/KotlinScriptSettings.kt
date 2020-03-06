@@ -1,4 +1,4 @@
-package uk.chriscormack.netkernel.lighting.desk.script
+package uk.chriscormack.netkernel.lighting.desk.model.script
 
 import org.netkernel.lang.kotlin.knkf.context.RequestContextWithResponse
 import org.netkernel.lang.kotlin.knkf.context.SourceRequestContext
