@@ -10,6 +10,7 @@ import org.netkernel.lang.kotlin.knkf.context.SinkRequestContext
 import org.netkernel.lang.kotlin.knkf.context.sourcePrimary
 import org.netkernel.lang.kotlin.knkf.endpoints.KotlinAccessor
 import uk.chriscormack.netkernel.lighting.desk.model.ChannelStateEndpoint
+import uk.chriscormack.netkernel.lighting.desk.model.TrackStateEndpoint
 import java.io.IOException
 import java.util.*
 
@@ -24,6 +25,14 @@ class LightingSocketAccessor : KotlinAccessor() {
             val data = JSONObject()
             data.put("c", channel)
             sendMessage("uC", data)
+        }
+
+        fun trackStateChanged(isPlaying: Boolean, artist: String, track: String) {
+            val data = JSONObject()
+            data.put("isPlaying", isPlaying)
+            data.put("artist", artist)
+            data.put("name", track)
+            sendMessage("uT", data)
         }
 
         private fun sendMessage(type: String, data: JSONObject?) {
@@ -78,6 +87,7 @@ class LightingSocketAccessor : KotlinAccessor() {
         }
 
         val type: String = messageJO.getString("type")
+
         when (type) {
             "ping" -> { // ignore
             }
@@ -114,7 +124,19 @@ class LightingSocketAccessor : KotlinAccessor() {
                 connection.remote.sendString(responseJson.toString())
             }
             "trackDetails" -> {
+                val data = JSONObject()
 
+                TrackStateEndpoint.readCurrentValue { playerState, artist, track ->
+                    data.put("isPlaying", playerState)
+                    data.put("artist", artist)
+                    data.put("name", track)
+                }
+
+                val responseJson = JSONObject()
+                responseJson.put("type", "trackDetails")
+                responseJson.put("data", data)
+
+                connection.remote.sendString(responseJson.toString())
             }
             else -> {
                 log(LogLevel.INFO, "Unrecognised message type: '$type'")

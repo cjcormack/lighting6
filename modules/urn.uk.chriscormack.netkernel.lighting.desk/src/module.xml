@@ -40,11 +40,46 @@
 		<accessor>
 			<grammar>
 				<active>
+					<identifier>active:trackChanged</identifier>
+					<varargs/>
+				</active>
+			</grammar>
+			<class>uk.chriscormack.netkernel.lighting.desk.model.TrackStateEndpoint</class>
+		</accessor>
+
+		<accessor>
+			<grammar>
+				<active>
 					<identifier>active:lightingModel</identifier>
 				</active>
 			</grammar>
 			<class>uk.chriscormack.netkernel.lighting.desk.model.ModelAccessor</class>
 		</accessor>
+
+		<accessor>
+			<grammar>
+				<active>
+					<identifier>active:lightingKotlinScript</identifier>
+					<argument name="operator" min="0" max="1"/>
+					<argument name="scriptName" min="0" max="1"/>
+				</active>
+			</grammar>
+			<class>uk.chriscormack.netkernel.lighting.desk.script.ScriptRunnerAccessor</class>
+		</accessor>
+		<accessor>
+			<grammar>
+				<active>
+					<identifier>active:lightingKotlinScriptTestCompile</identifier>
+					<argument name="operator"/>
+				</active>
+			</grammar>
+			<class>uk.chriscormack.netkernel.lighting.desk.script.TestCompileAccessor</class>
+		</accessor>
+
+		<transreptor>
+			<class>uk.chriscormack.netkernel.lighting.desk.script.LightingScriptTransreptor</class>
+			<description>Lighting Script compiler</description>
+		</transreptor>
 
 		<mapper>
 			<config>res:/uk/chriscormack/netkernel/lighting/desk/model/mapperConfig.xml</config>
@@ -57,6 +92,10 @@
 
 		<import>
 			<uri>urn:uk:chriscormack:netkernel:lighting:artNet</uri>
+			<private/>
+		</import>
+		<import>
+			<uri>urn:uk:chriscormack:netkernel:lighting:trackServer</uri>
 			<private/>
 		</import>
 		<import>
@@ -119,51 +158,6 @@
 		</import>
 	</rootspace>
 
-	<rootspace uri="urn:uk:chriscormack:netkernel:lighting:desk:script" name="Lighting / Desk / Kotlin™ Script">
-		<accessor>
-			<grammar>
-				<active>
-					<identifier>active:lightingKotlinScript</identifier>
-					<argument name="operator" min="0" max="1"/>
-					<argument name="scriptName" min="0" max="1"/>
-				</active>
-			</grammar>
-			<class>uk.chriscormack.netkernel.lighting.desk.script.ScriptRunnerAccessor</class>
-		</accessor>
-		<accessor>
-			<grammar>
-				<active>
-					<identifier>active:lightingKotlinScriptTestCompile</identifier>
-					<argument name="operator"/>
-				</active>
-			</grammar>
-			<class>uk.chriscormack.netkernel.lighting.desk.script.TestCompileAccessor</class>
-		</accessor>
-
-		<transreptor>
-			<class>uk.chriscormack.netkernel.lighting.desk.script.LightingScriptTransreptor</class>
-			<description>Lighting Script compiler</description>
-		</transreptor>
-
-		<import>
-			<uri>urn:uk:chriscormack:netkernel:lighting:desk:data</uri>
-			<private/>
-		</import>
-		<import>
-			<uri>urn:uk:chriscormack:netkernel:lighting:desk:model</uri>
-			<private/>
-		</import>
-
-		<import>
-			<uri>urn:org:netkernel:lang:kotlin</uri>
-			<private/>
-		</import>
-		<import>
-			<uri>urn:org:netkernel:ext:layer1</uri>
-			<private/>
-		</import>
-	</rootspace>
-
 	<rootspace uri="urn:uk:chriscormack:netkernel:lighting:desk:rest" public="true" name="Lighting / Desk / REST">
 		<literal uri="res:/etc/system/SimpleDynamicImportHook.xml" type="xml">
 			<connection>
@@ -189,11 +183,7 @@
 		</overlay>
 
 		<import>
-			<uri>urn:uk:chriscormack:netkernel:lighting:desk:data</uri>
-			<private/>
-		</import>
-		<import>
-			<uri>urn:uk:chriscormack:netkernel:lighting:desk:script</uri>
+			<uri>urn:uk:chriscormack:netkernel:lighting:desk:model</uri>
 			<private/>
 		</import>
 

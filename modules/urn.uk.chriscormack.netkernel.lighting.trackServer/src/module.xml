@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="2.0">
+	<meta>
+		<identity>
+			<uri>urn:uk:chriscormack:netkernel:lighting:trackServer</uri>
+			<version>1.0.0</version>
+		</identity>
+		<info>
+			<name>Lighting / Track Server</name>
+			<description></description>
+		</info>
+	</meta>
+
+	<system>
+		<dynamic/>
+	</system>
+
+	<rootspace uri="urn:uk:chriscormack:netkernel:lighting:trackServer" public="true" name="Lighting / Track Server">
+		<transport>
+			<class>uk.chriscormack.netkernel.lighting.trackServer.TrackServerTransport</class>
+		</transport>
+
+		<endpoint>
+			<grammar>
+				<active>
+					<identifier>active:trackServer-addTrackChangeListener</identifier>
+					<identifier>active:trackServer-removeTrackChangeListener</identifier>
+					<argument name="request" />
+				</active>
+			</grammar>
+			<class>uk.chriscormack.netkernel.lighting.trackServer.TrackChangeListenerAccessor</class>
+		</endpoint>
+
+		<endpoint>
+			<grammar>
+				<active>
+					<identifier>active:trackServer-play</identifier>
+					<identifier>active:trackServer-pause</identifier>
+				</active>
+			</grammar>
+			<class>uk.chriscormack.netkernel.lighting.trackServer.PlayerStateAccessor</class>
+		</endpoint>
+
+		<import>
+			<uri>urn:org:netkernel:lang:kotlin</uri>
+			<private/>
+		</import>
+		<import>
+			<uri>urn:org:netkernel:mod:hds</uri>
+			<private/>
+		</import>
+	</rootspace>
+</module>

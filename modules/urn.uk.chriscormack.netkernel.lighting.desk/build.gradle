@@ -9,12 +9,6 @@ buildscript {
 	apply from: '../../gradle/common/common-nk-boilerplate.gradle', to: buildscript
 }
 
-repositories {
-	maven{
-		url "https://jitpack.io"
-	}
-}
-
 //Additional Compile Dependencies
 dependencies {
 	compile group:'urn.org.netkernel', name: 'mod.hds', version: '[0.5.0,)'

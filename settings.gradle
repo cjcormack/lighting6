@@ -3,5 +3,6 @@
 
 include (
   ':modules:urn.uk.chriscormack.netkernel.lighting.artnet',
-  ':modules:urn.uk.chriscormack.netkernel.lighting.desk'
+  ':modules:urn.uk.chriscormack.netkernel.lighting.desk',
+  ':modules:urn.uk.chriscormack.netkernel.lighting.trackServer'
 )
