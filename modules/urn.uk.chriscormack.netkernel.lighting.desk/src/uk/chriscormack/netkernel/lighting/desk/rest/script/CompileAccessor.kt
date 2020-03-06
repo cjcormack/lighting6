@@ -2,17 +2,18 @@ package uk.chriscormack.netkernel.lighting.desk.rest.script
 
 import org.netkernel.lang.kotlin.dsl.hds.hds
 import org.netkernel.lang.kotlin.knkf.context.SourceRequestContext
+import org.netkernel.lang.kotlin.script.NetKernelKotlinScriptCompilationResult
 import org.netkernel.lang.kotlin.script.NetKernelKotlinScriptCompileException
 
 class CompileAccessor: ScriptTestAccessor() {
     override fun SourceRequestContext.onSource() {
         val scriptToCompile = source<String>("httpRequest:/body")
 
-        val error: NetKernelKotlinScriptCompileException? = try {
-            source<Unit>("active:lightingKotlinScriptTestCompile") {
+        val (success, reportDoc) = try {
+            val result = source<NetKernelKotlinScriptCompilationResult>("active:lightingKotlinScriptTestCompile") {
                 argumentByValue("operator", scriptToCompile)
             }
-            null
+            Pair(true, reportAsDoc(result.report))
         } catch (e: Exception) {
             val scriptException = generateSequence(e as Throwable) { it.cause }.last()
 
@@ -20,7 +21,7 @@ class CompileAccessor: ScriptTestAccessor() {
                 throw e
             }
 
-            scriptException
+            Pair(false, reportAsDoc(scriptException.report))
         }
 
         val resp = response {
@@ -28,11 +29,9 @@ class CompileAccessor: ScriptTestAccessor() {
                 argumentByValue("operand") {
                     hds {
                         node("compileResult") {
-                            node("success", error == null)
-                            if (error != null) {
-                                node("error") {
-                                    builder.appendChildren(error.reportAsDoc().reader)
-                                }
+                            node("success", success)
+                            node("report") {
+                                builder.appendChildren(reportDoc.reader)
                             }
                         }
                     }

@@ -2,11 +2,11 @@ package uk.chriscormack.netkernel.lighting.desk.rest.script
 
 import org.netkernel.lang.kotlin.dsl.hds.hds
 import org.netkernel.lang.kotlin.knkf.endpoints.KotlinAccessor
-import org.netkernel.lang.kotlin.script.NetKernelKotlinScriptCompileException
 import org.netkernel.mod.hds.IHDSDocument
+import kotlin.script.experimental.api.ScriptDiagnostic
 
 abstract class ScriptTestAccessor: KotlinAccessor() {
-    fun NetKernelKotlinScriptCompileException.reportAsDoc(): IHDSDocument {
+    fun reportAsDoc(report: List<ScriptDiagnostic>): IHDSDocument {
         return hds {
             node("messages__A") {
                 report.forEach { it ->
@@ -28,6 +28,7 @@ abstract class ScriptTestAccessor: KotlinAccessor() {
             }
         }
     }
+
     fun Throwable.asDoc(): IHDSDocument {
         return hds {
             node("message", message)

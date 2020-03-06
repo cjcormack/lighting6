@@ -94,29 +94,6 @@
 				<import>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/js/mapperConfig.xml</import>
 				<import>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/semantic-ui/mapperConfig.xml</import>
 				<import>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/partials/mapperConfig.xml</import>
-
-				<endpoint>
-					<grammar>ws:/lighting/</grammar>
-					<verbs>NEW</verbs>
-					<request>
-						<identifier>active:java</identifier>
-						<argument name="class">uk.chriscormack.netkernel.lighting.desk.frontend.LightingSocketAccessor</argument>
-					</request>
-				</endpoint>
-				<endpoint>
-					<grammar>
-						<active>
-							<identifier>ws:/lighting/</identifier>
-							<argument name="socketid"/>
-						</active>
-					</grammar>
-					<verbs>SINK,DELETE</verbs>
-					<request>
-						<identifier>active:java</identifier>
-						<argument name="class">uk.chriscormack.netkernel.lighting.desk.frontend.LightingSocketAccessor</argument>
-						<varargs/>
-					</request>
-				</endpoint>
 			</config>
 			<space>
 				<fileset>
@@ -124,6 +101,16 @@
 				</fileset>
 			</space>
 		</mapper>
+
+		<accessor>
+			<grammar>
+				<active>
+					<identifier>ws:/lighting/</identifier>
+					<argument name="socketid" min="0" max="1"/>
+				</active>
+			</grammar>
+			<class>uk.chriscormack.netkernel.lighting.desk.frontend.LightingSocketAccessor</class>
+		</accessor>
 
 		<import>
 			<uri>urn:uk:chriscormack:netkernel:lighting:desk:model</uri>

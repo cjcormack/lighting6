@@ -31,7 +31,7 @@ class RunAccessor: ScriptTestAccessor() {
                                 if (error is NetKernelKotlinScriptCompileException) {
                                     node("status", "compileError")
                                     node("error") {
-                                        builder.appendChildren(error.reportAsDoc().reader)
+                                        builder.appendChildren(reportAsDoc(error.report).reader)
                                     }
                                 } else {
                                     node("status", "exception")

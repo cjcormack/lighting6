@@ -6,6 +6,7 @@ import org.netkernel.lang.kotlin.knkf.Identifier
 import org.netkernel.lang.kotlin.knkf.LogLevel
 import org.netkernel.lang.kotlin.knkf.context.*
 import org.netkernel.lang.kotlin.knkf.endpoints.KotlinAccessor
+import org.netkernel.layer0.nkf.INKFRequestReadOnly
 import uk.chriscormack.netkernel.lighting.desk.model.ChannelStateEndpoint
 import uk.chriscormack.netkernel.lighting.desk.model.TrackStateEndpoint
 import java.io.IOException
@@ -13,6 +14,10 @@ import java.util.*
 
 class LightingSocketAccessor : KotlinAccessor() {
     private val connections = HashMap<String, Session>()
+
+    init {
+        declareSupportedVerbs(INKFRequestReadOnly.VERB_NEW or INKFRequestReadOnly.VERB_SINK or INKFRequestReadOnly.VERB_DELETE)
+    }
 
     override fun RequestContext.postCommission() {
         connections.clear()

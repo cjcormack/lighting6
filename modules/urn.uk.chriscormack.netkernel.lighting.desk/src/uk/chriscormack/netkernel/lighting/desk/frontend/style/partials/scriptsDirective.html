@@ -63,11 +63,11 @@
 				</div>
 				<div class="description">
 					<div class="ui relaxed divided list">
-						<div class="item" ng-repeat="message in current.compileResult.error.messages">
+						<div class="item" ng-repeat="message in current.compileResult.report.messages">
 							<i class="large middle aligned icon" ng-class="{exclamation: message.severity.ordinal <= 2, triangle: message.severity.ordinal <= 2, red: message.severity.ordinal == 0, orange: message.severity.ordinal == 1, yellow: message.severity.ordinal == 2, info: message.severity.ordinal == 3, circle: message.severity.ordinal == 3, blue: message.severity.ordinal == 3}"></i>
 							<div class="content">
 								<div class="header">{{message.severity.name}}</div>
-								<div class="description">{{message.message}}</div>
+								<div class="description"><strong ng-if="message.location">{{message.location}} </strong>{{message.message}}</div>
 							</div>
 						</div>
 					</div>
@@ -106,7 +106,7 @@
 							<i class="large middle aligned icon" ng-class="{exclamation: message.severity.ordinal <= 2, triangle: message.severity.ordinal <= 2, red: message.severity.ordinal == 0, orange: message.severity.ordinal == 1, yellow: message.severity.ordinal == 2, info: message.severity.ordinal == 3, circle: message.severity.ordinal == 3, blue: message.severity.ordinal == 3}"></i>
 							<div class="content">
 								<div class="header">{{message.severity.name}}</div>
-								<div class="description">{{message.message}} <span ng-if="message.location">{{message.location}}</span></div>
+								<div class="description"><strong ng-if="message.location">{{message.location}} </strong>{{message.message}}</div>
 							</div>
 						</div>
 					</div>

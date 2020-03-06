@@ -6,6 +6,8 @@ import org.netkernel.lang.kotlin.knkf.context.TransreptorRequestContext
 import org.netkernel.lang.kotlin.script.BaseKotlinScriptTransreptor
 import org.netkernel.lang.kotlin.script.BaseScriptRepresentation
 import org.netkernel.lang.kotlin.script.NetKernelScriptRuntimeSettings
+import uk.chriscormack.netkernel.lighting.desk.model.ModelAccessor
+import uk.chriscormack.netkernel.lighting.desk.model.fixture.FixtureRegister
 import kotlin.script.experimental.annotations.KotlinScript
 import kotlin.script.experimental.api.*
 
@@ -13,20 +15,19 @@ val kotlinScriptSettings = NetKernelScriptRuntimeSettings(LightingScriptRepresen
     ScriptEvaluationConfiguration {
         check(it is SourceRequestContext)
 
-        providedProperties(Pair("context", it))
-    }
-}
-
-fun getLightingKotlinScriptSettings() = NetKernelScriptRuntimeSettings(LightingScriptRepresentation::class, LightingScriptConfiguration) {
-    ScriptEvaluationConfiguration {
-        check(it is SourceRequestContext)
-
-        providedProperties(Pair("context", it))
+        providedProperties(Pair("context", it), Pair("fixtureRegister", ModelAccessor.INSTANCE.fixtureRegister))
     }
 }
 
 object LightingScriptConfiguration : ScriptCompilationConfiguration({
-    defaultImports("org.netkernel.layer0.nkf.INKFRequestContext", "org.netkernel.lang.kotlin.knkf.context.*", "org.netkernel.lang.kotlin.knkf.*")
+    defaultImports(
+            "org.netkernel.layer0.nkf.INKFRequestContext",
+            "org.netkernel.lang.kotlin.knkf.context.*",
+            "org.netkernel.lang.kotlin.knkf.*",
+            "uk.chriscormack.netkernel.lighting.desk.model.fixture.*",
+            "uk.chriscormack.netkernel.lighting.desk.model.fixture.dmx.*",
+            "java.awt.Color"
+    )
     ide {
         acceptedLocations(ScriptAcceptedLocation.Everywhere)
     }
@@ -34,7 +35,7 @@ object LightingScriptConfiguration : ScriptCompilationConfiguration({
 })
 
 @KotlinScript(fileExtension = "light.kts", displayName = "Lighting Kotlin Script", compilationConfiguration = LightingScriptConfiguration::class)
-abstract class LightKotlinScript(context: SourceRequestContext): RequestContextWithResponse<Any>(context.nkfContext) {
+abstract class LightKotlinScript(context: SourceRequestContext, val fixtureRegister: FixtureRegister): RequestContextWithResponse<Any>(context.nkfContext) {
     fun runScript(scriptName: String) {
         source<Unit>("active:lightingKotlinScript") {
             argumentByValue("scriptName", scriptName)

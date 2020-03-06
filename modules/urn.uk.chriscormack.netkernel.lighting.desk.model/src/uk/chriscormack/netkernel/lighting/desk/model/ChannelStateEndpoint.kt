@@ -62,6 +62,12 @@ class ChannelStateEndpoint: KotlinAccessor() {
         listeners.remove(callback)
     }
 
+    fun getCurrentValue(channelNo: Int): Int {
+        valuesLock.read {
+            return lightingValues[channelNo] ?: 0
+        }
+    }
+
     fun readCurrentValues(action: (Map<Int, Int>) -> Unit) {
         valuesLock.read {
             action(lightingValues)
