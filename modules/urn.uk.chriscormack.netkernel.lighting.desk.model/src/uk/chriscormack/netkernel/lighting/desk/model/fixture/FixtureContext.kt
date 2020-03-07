@@ -27,7 +27,7 @@ class FixtureContext(private val context: RequestContext) {
         this.username = username
     }
 
-    fun setHueLevel(groupId: Int, level: UByte) {
+    fun setHueLevel(groupId: Int, level: UByte, fadeMs: Long = 0) {
         val ipAddress = ipAddress
         val username = username
 
@@ -41,10 +41,11 @@ class FixtureContext(private val context: RequestContext) {
             argumentByValue("groupId", groupId)
             argumentByValue("on", level > 0u)
             argumentByValue("bri", level.toInt())
+            argumentByValue("transitiontime", fadeMs / 100)
         }
     }
 
-    fun setHueColor(groupId: Int, color: Color) {
+    fun setHueColor(groupId: Int, color: Color, fadeMs: Long = 0) {
         val ipAddress = ipAddress
         val username = username
 
@@ -55,8 +56,8 @@ class FixtureContext(private val context: RequestContext) {
         val hsbColors = Color.RGBtoHSB(color.red, color.green, color.blue, null)
 
         val hue: Int = (hsbColors[0] * 65280).roundToInt()
-        val saturation: Int = (hsbColors[1] * 255).roundToInt()
-        val brightness: Int = (hsbColors[2] * 255).roundToInt()
+        val saturation: Int = (hsbColors[1] * 254).roundToInt()
+        val brightness: Int = (hsbColors[2] * 254).roundToInt()
 
         context.sink<Int>("active:hue-groupAction") {
             argumentByValue("hueIp", ipAddress)
@@ -66,6 +67,7 @@ class FixtureContext(private val context: RequestContext) {
             argumentByValue("bri", brightness)
             argumentByValue("hue", hue)
             argumentByValue("sat", saturation)
+            argumentByValue("transitiontime", fadeMs / 100)
         }
     }
 }

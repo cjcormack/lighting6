@@ -10,6 +10,6 @@ class HueFixtureWithDimmer(val context: FixtureContext, val groupId: Int): Fixtu
         set(value) = context.setHueLevel(groupId, value)
 
     override fun fadeToLevel(level: UByte, fadeMs: Long) {
-        context.setHueLevel(groupId, level)
+        context.setHueLevel(groupId, level, fadeMs)
     }
 }
