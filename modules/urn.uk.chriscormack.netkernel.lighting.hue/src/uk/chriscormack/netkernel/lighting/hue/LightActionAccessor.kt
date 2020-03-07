@@ -28,6 +28,9 @@ class LightActionAccessor: KotlinAccessor() {
                         if (exists("arg:sat")) {
                             node("sat", source<Int>("arg:sat"))
                         }
+                        if (exists("arg:transitiontime")) {
+                            node("transitiontime", source<Long>("arg:transitiontime"))
+                        }
                     }
                 }
             })

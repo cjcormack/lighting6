@@ -20,7 +20,7 @@ class ModelAccessor: KotlinTransport() {
 
         log(LogLevel.WARNING, "Loading fixtures from 'config' script")
 
-        sourceAsync("active:lightingKotlinScript") {
+        source<Unit>("active:lightingKotlinScript") {
             argumentByValue("scriptName", "config")
         }
     }
