@@ -25,9 +25,13 @@ object LightingScriptConfiguration : ScriptCompilationConfiguration({
             "org.netkernel.lang.kotlin.knkf.context.*",
             "org.netkernel.lang.kotlin.knkf.*",
             "org.netkernel.lang.kotlin.util.*",
-            "uk.chriscormack.netkernel.lighting.desk.model.fixture.*",
-            "uk.chriscormack.netkernel.lighting.desk.model.fixture.dmx.*",
-            "uk.chriscormack.netkernel.lighting.desk.model.fixture.hue.*",
+            "uk.chriscormack.netkernel.lighting.desk.model.fixture.Fixture",
+            "uk.chriscormack.netkernel.lighting.desk.model.fixture.FixtureWithColour",
+            "uk.chriscormack.netkernel.lighting.desk.model.fixture.FixtureWithDimmer",
+            "uk.chriscormack.netkernel.lighting.desk.model.fixture.dmx.DmxFixtureWithDimmer",
+            "uk.chriscormack.netkernel.lighting.desk.model.fixture.dmx.DmxFixtureWithColour",
+            "uk.chriscormack.netkernel.lighting.desk.model.fixture.hue.HueFixtureWithDimmer",
+            "uk.chriscormack.netkernel.lighting.desk.model.fixture.hue.HueFixtureWithColour",
             "org.netkernel.mod.hds.IHDSDocument",
             "java.awt.Color"
     )

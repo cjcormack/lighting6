@@ -3,7 +3,7 @@ package uk.chriscormack.netkernel.lighting.desk.model.fixture
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 
-abstract class Fixture(val fixtureName: String) {
+abstract class Fixture(val key: String, val fixtureName: String) {
     val fixtureProperties: List<FixtureProperty> = this::class.supertypes.fixturePropertyAnnotations
 
     private val List<KType>.fixturePropertyAnnotations: List<FixtureProperty>

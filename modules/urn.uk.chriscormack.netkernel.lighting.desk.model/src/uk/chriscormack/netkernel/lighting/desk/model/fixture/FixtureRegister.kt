@@ -1,9 +1,9 @@
 package uk.chriscormack.netkernel.lighting.desk.model.fixture
 
 class FixtureRegister(val context: FixtureContext) {
-    val fixtureList = ArrayList<Fixture>()
+    val fixtureList = HashMap<String, Fixture>()
 
     fun register(fixture: Fixture) {
-        fixtureList.add(fixture)
+        fixtureList[fixture.key] = fixture
     }
 }
