@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="2.0">
+    <meta>
+        <identity>
+            <uri>urn:uk:chriscormack:netkernel:lighting:hue</uri>
+            <version>1.0.0</version>
+        </identity>
+        <info>
+            <name>Lighting / Philips Hue</name>
+            <description/>
+        </info>
+
+    </meta>
+
+    <system>
+        <dynamic />
+    </system>
+
+    <rootspace>
+        <mapper>
+            <config>
+                <endpoint>
+                    <grammar>
+                        <active>
+                            <identifier>active:hue-groupList</identifier>
+                            <argument name="hueIp"/>
+                            <argument name="username"/>
+                        </active>
+                    </grammar>
+                    <verbs>SOURCE</verbs>
+                    <request>
+                        <identifier>active:java</identifier>
+                        <argument name="class">uk.chriscormack.netkernel.lighting.hue.GroupListAccessor</argument>
+                        <varargs/>
+                    </request>
+                </endpoint>
+                <endpoint>
+                    <grammar>
+                        <active>
+                            <identifier>active:hue-groupAction</identifier>
+                            <argument name="hueIp"/>
+                            <argument name="groupId"/>
+                            <argument name="username"/>
+                            <argument name="on"/>
+                            <argument name="bri" min="0" max="1" />
+                            <argument name="hue" min="0" max="1" />
+                            <argument name="sat" min="0" max="1" />
+                        </active>
+                    </grammar>
+                    <verbs>SINK</verbs>
+                    <request>
+                        <identifier>active:java</identifier>
+                        <argument name="class">uk.chriscormack.netkernel.lighting.hue.GroupActionAccessor</argument>
+                        <varargs/>
+                    </request>
+                </endpoint>
+            </config>
+            <space/>
+        </mapper>
+
+        <import>
+            <uri>urn:org:netkernel:client:http</uri>
+            <private/>
+        </import>
+        <import>
+            <uri>urn:org:netkernel:mod:hds</uri>
+            <private/>
+        </import>
+        <import>
+            <uri>urn:org:netkernel:ext:layer1</uri>
+            <private/>
+        </import>
+        <import>
+            <uri>urn:org:netkernel:json:core</uri>
+            <private/>
+        </import>
+
+        <import>
+            <uri>urn:org:netkernel:lang:kotlin</uri>
+            <private/>
+        </import>
+    </rootspace>
+
+</module>

@@ -4,7 +4,7 @@ import uk.chriscormack.netkernel.lighting.desk.model.fixture.FixtureContext
 import uk.chriscormack.netkernel.lighting.desk.model.fixture.FixtureWithDimmer
 
 @ExperimentalUnsignedTypes
-class DmxFixtureWithDimmerImpl(val context: FixtureContext, val dimmerChannelNo: Int): FixtureWithDimmer {
+class DmxFixtureWithDimmer(val context: FixtureContext, val dimmerChannelNo: Int): FixtureWithDimmer {
     override var level: UByte
         get() = context.getDmxValue(dimmerChannelNo)
         set(value) = context.setDmxValue(dimmerChannelNo, value)

@@ -5,7 +5,7 @@ import uk.chriscormack.netkernel.lighting.desk.model.fixture.FixtureWithColour
 import java.awt.Color
 
 @ExperimentalUnsignedTypes
-class DmxFixtureWithColourImpl(
+class DmxFixtureWithColour(
         val context: FixtureContext,
         val redChannelNo: Int,
         val greenChannelNo: Int,

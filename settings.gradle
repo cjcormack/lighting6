@@ -6,5 +6,6 @@ include (
   ':modules:urn.uk.chriscormack.netkernel.lighting.desk',
   ':modules:urn.uk.chriscormack.netkernel.lighting.desk.model',
   ':modules:urn.uk.chriscormack.netkernel.lighting.desk.data',
-  ':modules:urn.uk.chriscormack.netkernel.lighting.trackServer'
+  ':modules:urn.uk.chriscormack.netkernel.lighting.trackServer',
+  ':modules:urn.uk.chriscormack.netkernel.lighting.hue'
 )

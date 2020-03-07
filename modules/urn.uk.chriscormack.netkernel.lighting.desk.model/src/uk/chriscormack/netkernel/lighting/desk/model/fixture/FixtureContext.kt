@@ -2,9 +2,14 @@ package uk.chriscormack.netkernel.lighting.desk.model.fixture
 
 import org.netkernel.lang.kotlin.knkf.context.RequestContext
 import uk.chriscormack.netkernel.lighting.desk.model.ChannelStateEndpoint
+import java.awt.Color
+import kotlin.math.roundToInt
 
 @ExperimentalUnsignedTypes
 class FixtureContext(private val context: RequestContext) {
+    var ipAddress: String? = null
+    var username: String? = null
+
     fun getDmxValue(channelNo: Int): UByte {
         return ChannelStateEndpoint.INSTANCE.getCurrentValue(channelNo).toUByte()
     }
@@ -14,6 +19,53 @@ class FixtureContext(private val context: RequestContext) {
             primaryArgument(channelLevel.toInt())
             argumentByValue("channelNo", channelNo)
             argumentByValue("fadeMs", fadeMs)
+        }
+    }
+
+    fun setHueConfig(ipAddress: String, username: String) {
+        this.ipAddress = ipAddress
+        this.username = username
+    }
+
+    fun setHueLevel(groupId: Int, level: UByte) {
+        val ipAddress = ipAddress
+        val username = username
+
+        if (ipAddress == null || username == null) {
+            throw Exception("Missing Hue configuration")
+        }
+
+        context.sink<Int>("active:hue-groupAction") {
+            argumentByValue("hueIp", ipAddress)
+            argumentByValue("username", username)
+            argumentByValue("groupId", groupId)
+            argumentByValue("on", level > 0u)
+            argumentByValue("bri", level.toInt())
+        }
+    }
+
+    fun setHueColor(groupId: Int, color: Color) {
+        val ipAddress = ipAddress
+        val username = username
+
+        if (ipAddress == null || username == null) {
+            throw Exception("Missing Hue configuration")
+        }
+
+        val hsbColors = Color.RGBtoHSB(color.red, color.green, color.blue, null)
+
+        val hue: Int = (hsbColors[0] * 65280).roundToInt()
+        val saturation: Int = (hsbColors[1] * 255).roundToInt()
+        val brightness: Int = (hsbColors[2] * 255).roundToInt()
+
+        context.sink<Int>("active:hue-groupAction") {
+            argumentByValue("hueIp", ipAddress)
+            argumentByValue("username", username)
+            argumentByValue("groupId", groupId)
+            argumentByValue("on", brightness > 0)
+            argumentByValue("bri", brightness)
+            argumentByValue("hue", hue)
+            argumentByValue("sat", saturation)
         }
     }
 }

@@ -101,6 +101,11 @@
 			<private/>
 		</import>
 		<import>
+			<uri>urn:uk:chriscormack:netkernel:lighting:hue</uri>
+			<private/>
+		</import>
+
+		<import>
 			<uri>urn:uk:chriscormack:netkernel:lighting:trackServer</uri>
 			<private/>
 		</import>
