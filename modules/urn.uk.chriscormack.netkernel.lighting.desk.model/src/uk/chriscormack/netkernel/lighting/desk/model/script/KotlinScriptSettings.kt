@@ -58,7 +58,7 @@ abstract class LightKotlinScript(context: SourceRequestContext, val fixtureRegis
     }
 }
 
-class LightingScriptRepresentation(script: CompiledScript<*>): BaseScriptRepresentation(script)
+class LightingScriptRepresentation(script: CompiledScript): BaseScriptRepresentation(script)
 
 class LightingScriptTransreptor: BaseKotlinScriptTransreptor<LightingScriptRepresentation>() {
     init {

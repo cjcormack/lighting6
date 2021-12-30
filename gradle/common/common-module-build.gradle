@@ -2,7 +2,6 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
-apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
 //Include common properties
@@ -20,7 +19,7 @@ apply from: '../../gradle/common/common-kotlin-build.gradle'
 project.group = MODULEMAVENGROUP
 
 //For Publishing - note target is a relative URI to the local maven-module-dev repo mirror
-uploadArchives { repositories { mavenDeployer { repository(url: UPLOADMAVENTARGET) } } }
+//uploadArchives { repositories { mavenDeployer { repository(url: UPLOADMAVENTARGET) } } }
 
 //Define source set so that the IDE tools automatically set up src/ path
 sourceSets {

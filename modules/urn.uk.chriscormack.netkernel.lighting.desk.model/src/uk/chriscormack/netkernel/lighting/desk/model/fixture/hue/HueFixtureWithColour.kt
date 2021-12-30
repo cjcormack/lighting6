@@ -7,7 +7,8 @@ import java.awt.Color
 @ExperimentalUnsignedTypes
 class HueFixtureWithColour(
         val context: FixtureContext,
-        val lightId: Int
+        val lightId: Int,
+        val maxBrightness: Int = 254
 ): FixtureWithColour {
     override val whiteSupport: Boolean = false
     override val amberSupport: Boolean = false
@@ -16,7 +17,7 @@ class HueFixtureWithColour(
     override var rgbColor: Color
         get() = throw NotImplementedError()
         set(value) {
-            context.setHueLightColor(lightId, value)
+            context.setHueLightColor(lightId, value, maxBrightness)
         }
 
     override var whiteLevel: UByte
@@ -32,7 +33,7 @@ class HueFixtureWithColour(
         set(value) {}
 
     override fun fadeToColour(rgbColor: Color, fadeMs: Long) {
-        context.setHueLightColor(lightId, rgbColor, fadeMs)
+        context.setHueLightColor(lightId, rgbColor, maxBrightness, fadeMs)
     }
 
     override fun fadeToWhiteLevel(level: UByte, fadeMs: Long) {}

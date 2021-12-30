@@ -3,6 +3,7 @@ package uk.chriscormack.netkernel.lighting.desk.model.fixture
 import org.netkernel.lang.kotlin.knkf.context.RequestContext
 import uk.chriscormack.netkernel.lighting.desk.model.ChannelStateEndpoint
 import java.awt.Color
+import kotlin.math.min
 import kotlin.math.roundToInt
 
 @ExperimentalUnsignedTypes
@@ -45,7 +46,7 @@ class FixtureContext(private val context: RequestContext) {
         }
     }
 
-    fun setHueLightColor(lightId: Int, color: Color, fadeMs: Long = 0) {
+    fun setHueLightColor(lightId: Int, color: Color, maxBrightness: Int, fadeMs: Long = 0) {
         val ipAddress = ipAddress
         val username = username
 
@@ -57,7 +58,7 @@ class FixtureContext(private val context: RequestContext) {
 
         val hue: Int = (hsbColors[0] * 65280).roundToInt()
         val saturation: Int = (hsbColors[1] * 254).roundToInt()
-        val brightness: Int = (hsbColors[2] * 254).roundToInt()
+        val brightness: Int = min((hsbColors[2] * 254).roundToInt(), maxBrightness)
 
         context.sink<Int>("active:hue-lightAction") {
             argumentByValue("hueIp", ipAddress)

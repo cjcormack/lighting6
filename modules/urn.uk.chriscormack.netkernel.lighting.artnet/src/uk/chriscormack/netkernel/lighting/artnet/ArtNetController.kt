@@ -3,7 +3,6 @@ package uk.chriscormack.netkernel.lighting.artnet
 import ch.bildspur.artnet.ArtNetClient
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.receiveOrNull
 import kotlinx.coroutines.channels.ticker
 import kotlinx.coroutines.selects.select
 import java.util.concurrent.ConcurrentHashMap
@@ -130,15 +129,15 @@ class ArtNetController(val universe: Int, val subnet: Int) {
             while(coroutineContext.isActive && !isClosed) {
                 try {
                     select<Unit> {
-                        ticker.onReceiveOrNull {
-                            if (it == null) {
-                                return@onReceiveOrNull
+                        ticker.onReceiveCatching {
+                            if (it.isClosed) {
+                                return@onReceiveCatching
                             }
 
-                            if (transmissionNeeded.receiveOrNull() == null) {
+                            if (transmissionNeeded.receiveCatching().isClosed) {
                                 isClosed = true
                                 ticker.cancel()
-                                return@onReceiveOrNull
+                                return@onReceiveCatching
                             }
 
                             sendCurrentValues()
@@ -172,31 +171,33 @@ class ArtNetController(val universe: Int, val subnet: Int) {
 
             while (isActive && !isClosed) {
                 select<Unit> {
-                    channel.onReceiveOrNull {
-                        if (it == null) {
+                    channel.onReceiveCatching {
+                        if (it.isClosed) {
                             isClosed = true
-                            return@onReceiveOrNull
+                            return@onReceiveCatching
                         }
 
                         tickerState?.ticker?.cancel()
                         tickerState = null
 
-                        val numberOfSteps = if (it.change.fadeMs == 0L) {
+                        val result = it.getOrThrow()
+
+                        val numberOfSteps = if (result.change.fadeMs == 0L) {
                             1
                         } else {
-                            max(1, (it.change.fadeMs / fadeTickMs).toInt())
+                            max(1, (result.change.fadeMs / fadeTickMs).toInt())
                         }
 
                         if (numberOfSteps > 1) {
-                            tickerState = TickerState(this@ArtNetController, coroutineContext, channelNo, numberOfSteps, it)
+                            tickerState = TickerState(this@ArtNetController, coroutineContext, channelNo, numberOfSteps, result)
                             if (tickerState!!.setValue(0)) {
                                 tickerState = null
                             }
                         } else {
-                            currentValues[channelNo] = it.change.newValue.toShort()
+                            currentValues[channelNo] = result.change.newValue.toShort()
                         }
 
-                        it.updateNotificationChannel.send(Unit)
+                        result.updateNotificationChannel.send(Unit)
                     }
 
                     if (tickerState != null) {

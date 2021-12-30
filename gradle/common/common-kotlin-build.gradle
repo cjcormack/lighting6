@@ -5,6 +5,7 @@ buildscript {
         mavenCentral()
         maven {
             url "http://maven.netkernel.org/netkernel-maven"
+            allowInsecureProtocol = true
         }
     }
 
@@ -19,7 +20,7 @@ repositories {
 }
 
 dependencies {
-    compile group: 'urn.org.netkernel', name: 'lang.kotlin', version: "$versions.langKotlin"
+    compileOnly group: 'urn.org.netkernel', name: 'lang.kotlin', version: "$versions.langKotlin"
 }
 
 sourceSets["main"].kotlin.srcDirs("src")

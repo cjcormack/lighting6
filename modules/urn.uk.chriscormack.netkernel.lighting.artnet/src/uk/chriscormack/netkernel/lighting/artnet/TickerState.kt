@@ -56,9 +56,9 @@ internal class TickerState(private val controller: ArtNetController, coroutineCo
         } else {
             hasFinished = false
             newValue = if (stepValue > 0) {
-                floor(startValue + (currentTickCount * stepValue)).toShort()
+                floor(startValue + (currentTickCount * stepValue)).toInt().toShort()
             } else {
-                ceil(startValue + (currentTickCount * stepValue)).toShort()
+                ceil(startValue + (currentTickCount * stepValue)).toInt().toShort()
             }
         }
 

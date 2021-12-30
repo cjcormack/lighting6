@@ -11,8 +11,8 @@ buildscript {
 
 //Additional Compile Dependencies
 dependencies {
-    compile group:'urn.org.netkernel', name: 'mod.hds', version: '[0.5.0,)'
-    compile group:'urn.org.netkernel', name: 'json.core', version: '[1.16.3,)'
+    compileOnly group:'urn.org.netkernel', name: 'mod.hds', version: '[0.5.0,)'
+    compileOnly group:'urn.org.netkernel', name: 'json.core', version: '[1.16.3,)'
 }
 
 compileKotlin {

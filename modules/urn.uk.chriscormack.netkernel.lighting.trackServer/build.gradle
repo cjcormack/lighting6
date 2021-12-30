@@ -11,7 +11,7 @@ buildscript {
 
 buildscript {
 	dependencies {
-		classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.8'
+		classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.18'
 	}
 }
 
@@ -19,24 +19,18 @@ apply plugin: 'com.google.protobuf'
 
 //Additional Compile Dependencies
 dependencies {
-	compile "io.grpc:grpc-netty-shaded:1.27.2"
-	compile "io.grpc:grpc-protobuf:1.27.2"
-	compile "io.grpc:grpc-stub:1.27.2"
+	implementation "io.grpc:grpc-netty-shaded:1.27.2"
+	implementation "io.grpc:grpc-protobuf:1.27.2"
+	implementation "io.grpc:grpc-stub:1.27.2"
 
 	compileOnly "javax.annotation:javax.annotation-api:1.2"
 
-	compile group:'urn.org.netkernel', name: 'mod.hds', version: '[0.5.0,)'
+	compileOnly group:'urn.org.netkernel', name: 'mod.hds', version: '[0.5.0,)'
 
-	compile("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3"){
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0"){
 		exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
 		exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-common'
 	}
-}
-
-compileKotlin {
-    kotlinOptions {
-        freeCompilerArgs = ["-XXLanguage:+InlineClasses"]
-    }
 }
 
 sourceSets["main"].proto.srcDirs("src")

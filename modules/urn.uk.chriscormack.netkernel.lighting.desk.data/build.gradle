@@ -11,9 +11,9 @@ buildscript {
 
 //Additional Compile Dependencies
 dependencies {
-	compile group:'urn.org.netkernel', name: 'mod.hds', version: '[0.5.0,)'
+	compileOnly group:'urn.org.netkernel', name: 'mod.hds', version: '[0.5.0,)'
 
-	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.9'
+	implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.9'
 }
 
 compileKotlin {
