@@ -26,5 +26,4 @@ abstract class Fixture(val key: String, val fixtureName: String, val position: I
 
             return lightProperties
         }
-
 }
