@@ -4,9 +4,6 @@ buildscript {
     repositories {
         mavenCentral()
         maven {
-            url "https://maven.netkernel.org/netkernel-maven"
-        }
-        maven {
             url "http://localhost:8080/netkernel-maven"
             allowInsecureProtocol = true
         }

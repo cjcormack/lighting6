@@ -22,13 +22,13 @@ project.group = MODULEMAVENGROUP
 //uploadArchives { repositories { mavenDeployer { repository(url: UPLOADMAVENTARGET) } } }
 
 //Define source set so that the IDE tools automatically set up src/ path
-sourceSets {
-	main {
-		java {
-			srcDir 'src/'
-		}
-	}
-}
+//sourceSets {
+//	main {
+//		java {
+//			srcDir 'src/'
+//		}
+//	}
+//}
 
 // Pin target JVM to Java 11
 sourceCompatibility = 11

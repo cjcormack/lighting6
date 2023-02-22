@@ -6,9 +6,6 @@ netkernel {
 
     useMavenNKLocal()
 
-    //Add the NetKernel maven repository for compile time dependency resolution of core NetKernel libraries
-    useMavenNK()
-
     //Add the core NetKernel libraries as compile time dependencies
     useStandardCompileDependencies()
 
