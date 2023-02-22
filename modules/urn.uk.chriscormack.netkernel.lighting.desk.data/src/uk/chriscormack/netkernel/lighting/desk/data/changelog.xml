@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd" changeLogId="10b280fa-6e9d-4260-83a1-2fd374753c80">
 	<changeSet id="script-storage" author="chris@cormack.me.uk">
 		<createTable tableName="scripts">
 			<column name="id" type="java.sql.Types.INTEGER" autoIncrement="true">
@@ -39,5 +39,25 @@
 		                         constraintName="fixtures_script_id_fk"/>
 
 		<addUniqueConstraint tableName="fixtures" columnNames="script_id,key"/>
+	</changeSet>
+
+	<changeSet id="script-dependencies" author="chris@cormack.me.uk">
+		<createTable tableName="script_dependencies">
+			<column name="script_id" type="java.sql.Types.INTEGER">
+				<constraints nullable="false"/>
+			</column>
+			<column name="other_script_id" type="java.sql.Types.INTEGER">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint baseTableName="script_dependencies" baseColumnNames="script_id"
+		                         referencedTableName="scripts" referencedColumnNames="id"
+		                         onDelete="CASCADE" onUpdate="RESTRICT"
+		                         constraintName="script_dependencies_script_id_fk"/>
+		<addForeignKeyConstraint baseTableName="script_dependencies" baseColumnNames="other_script_id"
+		                         referencedTableName="scripts" referencedColumnNames="id"
+		                         onDelete="CASCADE" onUpdate="RESTRICT"
+		                         constraintName="script_dependencies_other_script_id_fk"/>
 	</changeSet>
 </databaseChangeLog>

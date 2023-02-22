@@ -1,7 +1,7 @@
 // The following can be commented out if no modules have Kotlin support.
 
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.6.10' // Only if any of your modules require Kotlin
+    id 'org.jetbrains.kotlin.jvm' version '1.8.10' // Only if any of your modules require Kotlin
 }
 
 // repositories required for Kotlin Plugin to work

@@ -34,6 +34,7 @@ object LightingScriptConfiguration : ScriptCompilationConfiguration({
     ide {
         acceptedLocations(ScriptAcceptedLocation.Everywhere)
     }
+
     baseClass(LightKotlinScript::class)
 })
 

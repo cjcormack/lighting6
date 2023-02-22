@@ -1,6 +1,6 @@
 ext {
     versions = [
-        "kotlin": "1.6.10",
+        "kotlin": "1.8.10",
         "langKotlin": "[1.0.0,)"
     ]
 }

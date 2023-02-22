@@ -55,4 +55,23 @@
 			<varargs/>
 		</request>
 	</endpoint>
+
+	<!--<endpoint>
+		<id>lighting6:data:script:dependencies</id>
+		<grammar>
+			<active>
+				<grammar>
+					res:/lighting/data/script/
+					<group name="id"><regex type="integer"/></group>
+					/dependencies
+				</grammar>
+			</active>
+		</grammar>
+		<verbs>SOURCE,SINK,DELETE</verbs>
+		<request>
+			<identifier>active:java</identifier>
+			<argument name="class">uk.chriscormack.netkernel.lighting.desk.data.scripts.ScriptDependenciesAccessor</argument>
+			<varargs/>
+		</request>
+	</endpoint>-->
 </config>

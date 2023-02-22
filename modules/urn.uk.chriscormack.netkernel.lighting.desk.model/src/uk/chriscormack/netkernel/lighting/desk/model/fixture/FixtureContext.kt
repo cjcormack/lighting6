@@ -29,6 +29,14 @@ class FixtureContext(private val context: RequestContext) {
     }
 
     fun setHueLightLevel(lightId: Int, level: UByte, fadeMs: Long = 0) {
+        setHueLevel("light", lightId, level, fadeMs)
+    }
+
+    fun setHueGroupLevel(groupId: Int, level: UByte, fadeMs: Long = 0) {
+        setHueLevel("group", groupId, level, fadeMs)
+    }
+
+    fun setHueLevel(type: String, id: Int, level: UByte, fadeMs: Long = 0) {
         val ipAddress = ipAddress
         val username = username
 
@@ -36,10 +44,10 @@ class FixtureContext(private val context: RequestContext) {
             throw Exception("Missing Hue configuration")
         }
 
-        context.sink<Int>("active:hue-lightAction") {
+        context.sink<Int>("active:hue-${type}Action") {
             argumentByValue("hueIp", ipAddress)
             argumentByValue("username", username)
-            argumentByValue("lightId", lightId)
+            argumentByValue("${type}Id", id)
             argumentByValue("on", level > 0u)
             argumentByValue("bri", level.toInt())
             argumentByValue("transitiontime", fadeMs / 100)
@@ -47,6 +55,14 @@ class FixtureContext(private val context: RequestContext) {
     }
 
     fun setHueLightColor(lightId: Int, color: Color, maxBrightness: Int, fadeMs: Long = 0) {
+        setHueColor("light", lightId, color, maxBrightness, fadeMs)
+    }
+
+    fun setHueGroupColor(groupId: Int, color: Color, maxBrightness: Int, fadeMs: Long = 0) {
+        setHueColor("group", groupId, color, maxBrightness, fadeMs)
+    }
+
+    private fun setHueColor(type: String, id: Int, color: Color, maxBrightness: Int, fadeMs: Long = 0) {
         val ipAddress = ipAddress
         val username = username
 
@@ -60,10 +76,10 @@ class FixtureContext(private val context: RequestContext) {
         val saturation: Int = (hsbColors[1] * 254).roundToInt()
         val brightness: Int = min((hsbColors[2] * 254).roundToInt(), maxBrightness)
 
-        context.sink<Int>("active:hue-lightAction") {
+        context.sink<Int>("active:hue-${type}Action") {
             argumentByValue("hueIp", ipAddress)
             argumentByValue("username", username)
-            argumentByValue("lightId", lightId)
+            argumentByValue("${type}Id", id)
             argumentByValue("on", brightness > 0)
             argumentByValue("bri", brightness)
             argumentByValue("hue", hue)

@@ -3,7 +3,10 @@ repositories {
     mavenLocal()
     mavenCentral()
     maven {
-        url "http://maven.netkernel.org/netkernel-maven"
+        url "https://maven.netkernel.org/netkernel-maven"
+    }
+    maven {
+        url "http://127.0.0.1:8080/netkernel-maven"
         allowInsecureProtocol = true
     }
 }

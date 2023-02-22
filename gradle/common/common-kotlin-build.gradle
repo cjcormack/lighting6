@@ -4,7 +4,10 @@ buildscript {
     repositories {
         mavenCentral()
         maven {
-            url "http://maven.netkernel.org/netkernel-maven"
+            url "https://maven.netkernel.org/netkernel-maven"
+        }
+        maven {
+            url "http://localhost:8080/netkernel-maven"
             allowInsecureProtocol = true
         }
     }
@@ -29,11 +32,11 @@ sourceSets["main"].kotlin.exclude("**/*.kts")
 
 compileKotlin {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
 }
 compileTestKotlin {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
 }

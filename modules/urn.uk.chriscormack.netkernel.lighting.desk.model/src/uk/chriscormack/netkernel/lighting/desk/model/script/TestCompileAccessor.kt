@@ -10,6 +10,7 @@ class TestCompileAccessor: KotlinAccessor() {
         response {
             sourceRequest<NetKernelKotlinScriptCompilationResult>("active:kotlinScriptCompile") {
                 argument("operator", Identifier("arg:operator"))
+
                 argumentByValue("scriptRuntimeSettings", kotlinScriptSettings)
             }.issueForResponse()
         }

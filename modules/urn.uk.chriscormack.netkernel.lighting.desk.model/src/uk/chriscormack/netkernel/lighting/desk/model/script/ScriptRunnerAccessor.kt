@@ -27,6 +27,16 @@ class ScriptRunnerAccessor: KotlinAccessor() {
             sourceRequest("active:kotlinScript") {
                 argumentByValue("operator", script)
                 argumentByValue("scriptRuntimeSettings", kotlinScriptSettings)
+
+                this@onSource.nkfContext.thisRequest.let { thisRequest ->
+                    repeat(thisRequest.argumentCount) {
+                        val argName = thisRequest.getArgumentName(it)
+                        // TODO I am pretty sure that there is a better way of doing this!
+                        if (argName != "operator" && argName != "scriptName" && argName != "activeType" && argName != "scheme") {
+                            argument(argName, Identifier("arg:$argName"))
+                        }
+                    }
+                }
             }
         }
     }

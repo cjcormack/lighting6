@@ -45,6 +45,7 @@ module.directive('scriptsDirective', function (ScriptsService, $window) {
 				var newScript = {
 					id: "new",
 					name: "New Script",
+					dependencies: "",
 					script: ""
 				};
 				$scope.scripts.push(newScript);
@@ -110,6 +111,7 @@ module.directive('scriptsDirective', function (ScriptsService, $window) {
 					return;
 				}
 				$scope.current.details.name = $scope.current.originalDetails.name;
+				$scope.current.details.dependencies = $scope.current.originalDetails.dependencies;
 				$scope.current.details.script = $scope.current.originalDetails.script;
 			};
 			$scope.saveChanges = function() {

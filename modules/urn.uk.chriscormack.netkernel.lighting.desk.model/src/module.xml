@@ -68,6 +68,7 @@
 					<identifier>active:lightingKotlinScript</identifier>
 					<argument name="operator" min="0" max="1"/>
 					<argument name="scriptName" min="0" max="1"/>
+					<varargs/>
 				</active>
 			</grammar>
 			<class>uk.chriscormack.netkernel.lighting.desk.model.script.ScriptRunnerAccessor</class>
@@ -77,6 +78,7 @@
 				<active>
 					<identifier>active:lightingKotlinScriptTestCompile</identifier>
 					<argument name="operator"/>
+					<argument name="dependency" min="0" max="*"/>
 				</active>
 			</grammar>
 			<class>uk.chriscormack.netkernel.lighting.desk.model.script.TestCompileAccessor</class>

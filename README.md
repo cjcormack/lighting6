@@ -1,5 +1,11 @@
 # Chris' Lighting Controller v6
 
+## Building notes
+
+* After rebuilding, kotlin-stdlib Jars need removing, `rm -rf modules/urn.uk.chriscormack.netkernel.lighting.*/build/urn.uk.chriscormack.netkernel.lighting.*/lib/kotlin-stdlib-*`
+* Build needs custom build of NetKernel Gradle plugin from https://github.com/cjcormack/gradle-plugin and running a `gradle publishToMavenLocal `
+
+
 ## TODO
 
 * Compile warnings should pass through, even when the compilation was successful

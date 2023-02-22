@@ -110,6 +110,23 @@
                         <varargs/>
                     </request>
                 </endpoint>
+
+                <endpoint>
+                    <grammar>
+                        <active>
+                            <identifier>active:hue-findGroup</identifier>
+                            <argument name="hueIp"/>
+                            <argument name="username"/>
+                            <argument name="groupName"/>
+                        </active>
+                    </grammar>
+                    <verbs>SOURCE</verbs>
+                    <request>
+                        <identifier>active:java</identifier>
+                        <argument name="class">uk.chriscormack.netkernel.lighting.hue.FindGroupAccessor</argument>
+                        <varargs/>
+                    </request>
+                </endpoint>
             </config>
             <space/>
         </mapper>

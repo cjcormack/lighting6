@@ -12,6 +12,10 @@ buildscript {
 //Additional Compile Dependencies
 dependencies {
 	compileOnly group:'urn.org.netkernel', name: 'mod.hds', version: '[0.5.0,)'
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"){
+        exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
+        exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-common'
+    }
 }
 
 compileKotlin {

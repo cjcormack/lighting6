@@ -29,34 +29,45 @@
 			</config>
 		</literal>
 
-		<mapper>
-			<config>
-				<import>res:/uk/chriscormack/netkernel/lighting/desk/data/scripts/mapperConfig.xml</import>
-				<import>res:/uk/chriscormack/netkernel/lighting/desk/data/fixtures/mapperConfig.xml</import>
-			</config>
+		<overlay>
+			<prototype>mod-db:sqlTransactionOverlay</prototype>
+			<configuration>res:/etc/ConfigRDBMS.xml</configuration>
 			<space>
-				<fileset>
-					<regex>res:/uk/chriscormack/netkernel/lighting/desk/data/(scripts|fixtures)/.*</regex>
-				</fileset>
-			</space>
-		</mapper>
+				<mapper>
+					<config>
+						<import>res:/uk/chriscormack/netkernel/lighting/desk/data/scripts/mapperConfig.xml</import>
+						<import>res:/uk/chriscormack/netkernel/lighting/desk/data/fixtures/mapperConfig.xml</import>
+					</config>
+					<space>
+						<fileset>
+							<regex>res:/uk/chriscormack/netkernel/lighting/desk/data/(scripts|fixtures)/.*</regex>
+						</fileset>
+					</space>
+				</mapper>
 
-		<import>
-			<uri>urn:org:netkernel:ext:layer1</uri>
-			<private/>
-		</import>
-		<import>
-			<uri>urn:org:netkernel:mod:hds</uri>
-			<private/>
-		</import>
+				<import>
+					<uri>urn:org:netkernel:ext:layer1</uri>
+					<private/>
+				</import>
+				<import>
+					<uri>urn:org:netkernel:mod:hds</uri>
+					<private/>
+				</import>
+
+				<import>
+					<uri>urn:org:netkernel:mod:db</uri>
+					<private/>
+				</import>
+
+				<import>
+					<uri>urn:org:netkernel:lang:kotlin</uri>
+					<private/>
+				</import>
+			</space>
+		</overlay>
 
 		<import>
 			<uri>urn:org:netkernel:mod:db</uri>
-			<private/>
-		</import>
-
-		<import>
-			<uri>urn:org:netkernel:lang:kotlin</uri>
 			<private/>
 		</import>
 	</rootspace>

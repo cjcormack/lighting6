@@ -7,6 +7,7 @@ import org.netkernel.lang.kotlin.knkf.endpoints.KotlinAccessor
 import org.netkernel.lang.kotlin.util.SQL
 import org.netkernel.lang.kotlin.util.firstValue
 import org.netkernel.lang.kotlin.util.urlEncode
+import org.netkernel.lang.kotlin.util.values
 import org.netkernel.mod.hds.IHDSDocument
 
 @Suppress("DuplicatedCode")
@@ -20,10 +21,19 @@ class ScriptAccessor: KotlinAccessor() {
 
         val name: String
         val script: String
+//        val dependencies: List<Int>
 
         details.reader.getFirstNode("/script").let {
             name = it.firstValue("name", this)
             script = it.firstValue("script", this)
+//            dependencies = it.values<String>("dependencies/dependency").map { dependency ->
+//                val scriptDetailsIdentifier = sourceToEndpoint<Identifier>("lighting6:data:script:byName") {
+//                    argument("name", Identifier(dependency))
+//                }
+//
+//                val scriptDetails = source<IHDSDocument>(scriptDetailsIdentifier)
+//                scriptDetails.reader.firstValue<Int>("/script/id")
+//            }
         }
 
         source<Unit>("active:sqlPSUpdate") {
@@ -32,6 +42,20 @@ class ScriptAccessor: KotlinAccessor() {
             argumentByValue("param", name)
             argumentByValue("param", script)
         }
+
+//        sinkToEndpoint<IHDSDocument>("lighting6:data:script:dependencies") {
+//            primaryArgument {
+//                hds {
+//                    node("dependencies") {
+//                        dependencies.forEach {
+//                            node("script") {
+//                                node("id", it)
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
         source<Unit>("active:cutGoldenThread") {
             argument("id", Identifier("gt:/lighting/data/script/list")) // name may have changed
