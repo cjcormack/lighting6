@@ -81,19 +81,8 @@
 
 		<mapper>
 			<config>
-				<endpoint>
-					<grammar>res:/lighting/</grammar>
-					<header name="mime">text/html</header>
-					<request>
-						<identifier>res:/uk/chriscormack/netkernel/lighting/desk/frontend/index.xml</identifier>
-					</request>
-				</endpoint>
-
-				<import>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/css/mapperConfig.xml</import>
-				<import>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/images/mapperConfig.xml</import>
-				<import>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/js/mapperConfig.xml</import>
-				<import>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/semantic-ui/mapperConfig.xml</import>
-				<import>res:/uk/chriscormack/netkernel/lighting/desk/frontend/style/partials/mapperConfig.xml</import>
+				<import>res:/uk/chriscormack/netkernel/lighting/desk/frontend/old/mapperConfig.xml</import>
+				<import>res:/uk/chriscormack/netkernel/lighting/desk/frontend/mapperConfig.xml</import>
 			</config>
 			<space>
 				<fileset>

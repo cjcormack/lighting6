@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2023 by Chris Cormack
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in
+  ~ all copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  ~ THE SOFTWARE.
+  -->
+<config>
+    <endpoint>
+        <grammar>res:/lighting/
+            <group>
+                <regex>([a-zA-Z]+(/?))*</regex>
+            </group>
+        </grammar>
+        <header name="mime">text/html</header>
+        <request>
+            <identifier>res:/uk/chriscormack/netkernel/lighting/desk/frontend/index.html</identifier>
+        </request>
+    </endpoint>
+
+    <endpoint>
+        <id>lighting:json</id>
+        <grammar>
+            res:/lighting/
+            <group name="file-name">
+                <regex type="anything"/>.json
+            </group>
+        </grammar>
+        <header name="mime">application/json</header>
+        <request>
+            <identifier>res:/uk/chriscormack/netkernel/lighting/desk/frontend/[[arg:file-name]]</identifier>
+        </request>
+    </endpoint>
+
+    <endpoint>
+        <id>lighting:favicon</id>
+        <grammar>
+            res:/lighting/favicon.ico
+        </grammar>
+        <header name="mime">image/x-icon</header>
+        <request>
+            <identifier>res:/uk/chriscormack/netkernel/lighting/desk/frontend/favicon.ico</identifier>
+        </request>
+    </endpoint>
+
+    <endpoint>
+        <id>lighting:png</id>
+        <grammar>
+            res:/lighting/
+            <group name="file-name">
+                <regex type="anything"/>.png
+            </group>
+        </grammar>
+        <header name="mime">image/png</header>
+        <request>
+            <identifier>res:/uk/chriscormack/netkernel/lighting/desk/frontend/[[arg:file-name]]</identifier>
+        </request>
+    </endpoint>
+
+    <endpoint>
+        <id>lighting:static:css</id>
+        <grammar>
+            res:/lighting/static/css/
+            <group name="file-name">
+                <regex type="anything"/>.css
+            </group>
+        </grammar>
+        <request>
+            <identifier>res:/uk/chriscormack/netkernel/lighting/desk/frontend/static/css/[[arg:file-name]]</identifier>
+        </request>
+        <header name="mime">
+            <literal type="string">text/css</literal>
+        </header>
+    </endpoint>
+    <endpoint>
+        <id>lighting:static:css:map</id>
+        <grammar>
+            res:/lighting/static/css/
+            <group name="file-name">
+                <regex type="anything"/>.css.map
+            </group>
+        </grammar>
+        <request>
+            <identifier>res:/uk/chriscormack/netkernel/lighting/desk/frontend/static/css/[[arg:file-name]]</identifier>
+        </request>
+        <header name="mime">
+            <literal type="string">application/json</literal>
+        </header>
+    </endpoint>
+
+    <endpoint>
+        <id>lighting:static:js</id>
+        <grammar>
+            res:/lighting/static/js/
+            <group name="file-name">
+                <regex type="anything"/>.js
+            </group>
+        </grammar>
+        <request>
+            <identifier>res:/uk/chriscormack/netkernel/lighting/desk/frontend/static/js/[[arg:file-name]]</identifier>
+        </request>
+        <header name="mime">
+            <literal type="string">application/javascript</literal>
+        </header>
+    </endpoint>
+    <endpoint>
+        <id>lighting:static:js:map</id>
+        <grammar>
+            res:/lighting/static/js/
+            <group name="file-name">
+                <regex type="anything"/>.js.map
+            </group>
+        </grammar>
+        <request>
+            <identifier>res:/uk/chriscormack/netkernel/lighting/desk/frontend/static/js/[[arg:file-name]]</identifier>
+        </request>
+        <header name="mime">
+            <literal type="string">application/json</literal>
+        </header>
+    </endpoint>
+
+    <endpoint>
+        <id>lighting:static:media:woff</id>
+        <grammar>
+            res:/lighting/static/media/
+            <group name="file-name">
+                <regex type="anything"/>.woff
+            </group>
+        </grammar>
+        <request>
+            <identifier>res:/uk/chriscormack/netkernel/lighting/desk/frontend/static/media/[[arg:file-name]]</identifier>
+        </request>
+        <header name="mime">
+            <literal type="string">font/woff</literal>
+        </header>
+    </endpoint>
+    <endpoint>
+        <id>lighting:static:media:woff2</id>
+        <grammar>
+            res:/lighting/static/media/
+            <group name="file-name">
+                <regex type="anything"/>.woff2
+            </group>
+        </grammar>
+        <request>
+            <identifier>res:/uk/chriscormack/netkernel/lighting/desk/frontend/static/media/[[arg:file-name]]</identifier>
+        </request>
+        <header name="mime">
+            <literal type="string">font/woff2</literal>
+        </header>
+    </endpoint>
+</config>
